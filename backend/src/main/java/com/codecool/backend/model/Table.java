@@ -6,9 +6,9 @@ public class Table {
     private final int availableSeats;
     private boolean reserved;
 
-    public Table( int availibleSeatls, boolean reserved) {
+    public Table( int availableSeats, boolean reserved) {
         tableNum = nextTableNumber++;
-        this.availableSeats = availibleSeatls;
+        this.availableSeats = availableSeats;
         this.reserved = reserved;
     }
 
