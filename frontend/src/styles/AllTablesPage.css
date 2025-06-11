@@ -1,0 +1,67 @@
+.tables-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.table-card {
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.table-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.available {
+    background-color: #e8f5e9; /* Light green */
+    border: 2px solid #4caf50; /* Green border */
+}
+
+.reserved {
+    background-color: #ffebee; /* Light red */
+    border: 2px solid #f44336; /* Red border */
+    opacity: 0.9;
+}
+
+h3 {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+}
+
+p {
+    margin: 0 0 1rem 0;
+    font-weight: 500;
+}
+
+.reserve-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+
+.reserve-button:hover {
+    background-color: #388e3c;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 2rem;
+}
