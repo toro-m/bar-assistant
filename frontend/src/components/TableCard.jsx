@@ -1,15 +1,20 @@
 import React from 'react';
+import '../styles/TableCard.css';
 
 const TableCard = ({ table, onReserve }) => {
     return (
         <div className={`table-card ${table.reserved ? 'reserved' : 'available'}`}>
-            <h3>Table {table.tableNum}</h3>
-            <p>{table.reserved ? 'Reserved' : 'Available'}</p>
-            <p>Capacity: {table.availableSeats}</p>
+            <div>
+                <h3>Table {table.tableNum}</h3>
+                <span className="status">
+          {table.reserved ? 'Reserved' : 'Available'}
+        </span>
+                <p className="seats">Seats: {table.availableSeats}</p>
+            </div>
             {!table.reserved && (
                 <button
-                    onClick={() => onReserve(table.tableNum)}
                     className="reserve-button"
+                    onClick={() => onReserve()}
                 >
                     Reserve
                 </button>
