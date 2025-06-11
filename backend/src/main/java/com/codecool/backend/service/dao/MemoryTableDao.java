@@ -1,10 +1,12 @@
 package com.codecool.backend.service.dao;
 
 import com.codecool.backend.model.Table;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Repository
 public class MemoryTableDao implements TableDao {
     private final Map<Integer, Table> tables = new ConcurrentHashMap<>();
 
