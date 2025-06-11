@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import '../styles/AllTablesPage.css';
+import TableCard from "../components/TableCard.jsx";
 
 const AllTablesPage = () => {
   const [tables, setTables] = useState([]);
@@ -67,22 +68,11 @@ const AllTablesPage = () => {
       <h1>All Tables</h1>
       <div className="tables-grid">
         {tables.map((table) => (
-          <div
+          <TableCard
             key={table.tableNum}
-            className={`table-card ${table.reserved ? 'reserved' : 'available'}`}
-          >
-            <h3>Table {table.tableNum}</h3>
-            <p>{table.reserved ? 'Reserved' : 'Available'}</p>
-            <p>Capacity: {table.availableSeats}</p>
-            {!table.reserved && (
-              <button 
-                onClick={() => handleReserve(table.tableNum)}
-                className="reserve-button"
-              >
-                Reserve
-              </button>
-            )}
-          </div>
+            table={table}
+            onReserve={handleReserve}
+          />
         ))}
       </div>
     </div>
