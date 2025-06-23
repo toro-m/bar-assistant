@@ -1,7 +1,7 @@
 package com.codecool.backend.controller;
 
 import com.codecool.backend.DTO.NewTableDTO;
-import com.codecool.backend.model.Table;
+import com.codecool.backend.model.BarTable;
 import com.codecool.backend.service.TableService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +17,12 @@ public class TableController {
     }
 
     @GetMapping
-    public List<Table> getAllTables() {
+    public List<BarTable> getAllTables() {
         return tableService.getAllTables();
     }
 
     @GetMapping("/{tableNumber}")
-    public Table getTable(@PathVariable int tableNumber) {
+    public BarTable getTable(@PathVariable int tableNumber) {
         return tableService.getTable(tableNumber).orElse(null);
     }
 

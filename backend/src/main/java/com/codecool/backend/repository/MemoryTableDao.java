@@ -1,6 +1,6 @@
 package com.codecool.backend.repository;
 
-import com.codecool.backend.model.Table;
+import com.codecool.backend.model.BarTable;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -8,34 +8,34 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class MemoryTableDao implements TableDao {
-    private final Map<Integer, Table> tables = new ConcurrentHashMap<>();
+    private final Map<Integer, BarTable> tables = new ConcurrentHashMap<>();
 
     @Override
-    public List<Table> getAllTables() {
+    public List<BarTable> getAllTables() {
         return new ArrayList<>(tables.values());
     }
 
     @Override
-    public Table getTable(int tableNumber) {
+    public BarTable getTable(int tableNumber) {
         return tables.get(tableNumber);
     }
 
     @Override
-    public boolean addTable(Table table) {
-        if (table == null) {
+    public boolean addTable(BarTable barTable) {
+        if (barTable == null) {
             return false;
         }
-        tables.put(table.getTableNum(), table);
+        tables.put(barTable.getTableNum(), barTable);
         return true;
     }
 
     @Override
     public boolean reserveTable(int tableNumber) {
-        Table table = tables.get(tableNumber);
-        if (table == null || table.isReserved()) {
+        BarTable barTable = tables.get(tableNumber);
+        if (barTable == null || barTable.isReserved()) {
             return false;
         }
-        table.setReserved(true);
+        barTable.setReserved(true);
         return true;
     }
 

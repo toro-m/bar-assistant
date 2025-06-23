@@ -1,36 +1,40 @@
 package com.codecool.backend.model;
 
 
-@Entity
-public class Table {
-    private static int nextTableNumber = 1;
-    private int tableNum;
-    private final int availableSeats;
-    private boolean reserved;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-    public Table( int availableSeats, boolean reserved) {
-        tableNum = nextTableNumber++;
+@Entity
+public class BarTable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private int tableNumber;
+    private int availableSeats;
+
+    public BarTable() {
+    }
+
+    public BarTable(int availableSeats) {
         this.availableSeats = availableSeats;
-        this.reserved = reserved;
+    }
+
+    public int getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
     }
 
     public int getAvailableSeats() {
         return availableSeats;
     }
 
-    public boolean isReserved() {
-        return reserved;
+    public void setAvailableSeats(int availableSeats) {
+        this.availableSeats = availableSeats;
     }
 
-    public void setReserved(boolean reserved) {
-        this.reserved = reserved;
-    }
-
-    public int getTableNum() {
-        return tableNum;
-    }
-
-    public void setTableNum(int tableNum) {
-        this.tableNum = tableNum;
-    }
 }

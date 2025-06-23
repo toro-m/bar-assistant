@@ -1,6 +1,6 @@
 package com.codecool.backend.service;
 
-import com.codecool.backend.model.Table;
+import com.codecool.backend.model.BarTable;
 import com.codecool.backend.repository.TableDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,18 +17,18 @@ public class TableService {
         this.tableDao = tableDao;
     }
 
-    public List<Table> getAllTables() {
+    public List<BarTable> getAllTables() {
         return tableDao.getAllTables();
     }
 
-    public Optional<Table> getTable(int tableNumber) {
-        Table table = tableDao.getTable(tableNumber);
-        return Optional.ofNullable(table);
+    public Optional<BarTable> getTable(int tableNumber) {
+        BarTable barTable = tableDao.getTable(tableNumber);
+        return Optional.ofNullable(barTable);
     }
 
     public boolean addTable(int availableSeats, boolean reserved) {
-        Table table = new Table(availableSeats, reserved);
-        return tableDao.addTable(table);
+        BarTable barTable = new BarTable(availableSeats, reserved);
+        return tableDao.addTable(barTable);
     }
 
     public boolean reserveTable(int tableNumber) {
