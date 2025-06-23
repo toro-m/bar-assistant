@@ -1,4 +1,4 @@
-package com.codecool.backend.service.dao;
+package com.codecool.backend.repository;
 
 import com.codecool.backend.model.Table;
 import org.springframework.stereotype.Repository;
