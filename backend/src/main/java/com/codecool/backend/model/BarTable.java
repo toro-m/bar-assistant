@@ -1,5 +1,7 @@
 package com.codecool.backend.model;
 
+
+@Entity
 public class Table {
     private static int nextTableNumber = 1;
     private int tableNum;
