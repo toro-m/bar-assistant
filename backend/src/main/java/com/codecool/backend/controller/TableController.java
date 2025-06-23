@@ -16,7 +16,7 @@ public class TableController {
         this.tableService = tableService;
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<Table> getAllTables() {
         return tableService.getAllTables();
     }
