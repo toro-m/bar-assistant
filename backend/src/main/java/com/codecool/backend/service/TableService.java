@@ -1,7 +1,7 @@
 package com.codecool.backend.service;
 
 import com.codecool.backend.model.Table;
-import com.codecool.backend.service.dao.TableDao;
+import com.codecool.backend.repository.TableDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
