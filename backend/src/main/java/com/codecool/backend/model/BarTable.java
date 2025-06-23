@@ -1,23 +1,23 @@
 package com.codecool.backend.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class BarTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    //TODO - make sure to make ths tableNumber unique, as of now, it works but table number can be duplicated
+    @Column(unique = true)
     private int tableNumber;
     private int availableSeats;
 
     public BarTable() {
     }
 
-    public BarTable(int availableSeats) {
+    public BarTable(int tableNumber ,int availableSeats) {
+        this.tableNumber = tableNumber;
         this.availableSeats = availableSeats;
     }
 

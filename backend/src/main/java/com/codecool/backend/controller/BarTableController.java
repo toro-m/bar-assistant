@@ -2,42 +2,40 @@ package com.codecool.backend.controller;
 
 import com.codecool.backend.DTO.NewTableDTO;
 import com.codecool.backend.model.BarTable;
-import com.codecool.backend.service.TableService;
+import com.codecool.backend.service.BarTableService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/tables")
-public class TableController {
-    private final TableService tableService;
+public class BarTableController {
+    private final BarTableService barTableService;
 
-    public TableController(TableService tableService) {
-        this.tableService = tableService;
+    public BarTableController(BarTableService barTableService) {
+        this.barTableService = barTableService;
     }
 
     @GetMapping
     public List<BarTable> getAllTables() {
-        return tableService.getAllTables();
+        return barTableService.getAllTables();
     }
 
     @GetMapping("/{tableNumber}")
     public BarTable getTable(@PathVariable int tableNumber) {
-        return tableService.getTable(tableNumber).orElse(null);
+        return barTableService.getTable(tableNumber).orElse(null);
     }
 
     @PostMapping
-    public boolean addTable(@RequestBody NewTableDTO newTableDTO) {
-        return tableService.addTable(newTableDTO.numOfSeats(), newTableDTO.reserved());
+    public void addTable(@RequestBody NewTableDTO newTableDTO) {
+        //todo return 201 http code
+         barTableService.addTable(newTableDTO.tableNumber(), newTableDTO.numOfSeats());
     }
 
     @DeleteMapping("/{tableNumber}")
-    public boolean deleteTable(@PathVariable int tableNumber) {
-        return tableService.deleteTable(tableNumber);
+    public void deleteTable(@PathVariable int tableNumber) {
+         barTableService.deleteTable(tableNumber);
     }
 
-    @PatchMapping("/reserve/{tableNumber}")
-    public boolean reserveTable(@PathVariable int tableNumber) {
-        return tableService.reserveTable(tableNumber);
-    }
+
 }

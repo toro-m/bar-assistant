@@ -24,8 +24,8 @@ public class BarTableService {
         return Optional.ofNullable(barTable);
     }
 
-    public void addTable(int availableSeats) {
-        BarTable barTable = new BarTable(availableSeats);
+    public void addTable(int tableNumber, int availableSeats) {
+        BarTable barTable = new BarTable(tableNumber, availableSeats);
         barTableRepository.save(barTable);
     }
 
