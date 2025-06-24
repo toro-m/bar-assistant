@@ -21,6 +21,14 @@ public class ReservationService {
         this.barTableRepository = barTableRepository;
     }
 
+    public List<ReservationDTO> getAllReservationsByTableNumber(int tableNumber) {
+        List<Reservation> reservations = reservationRepository.findReservationsByTable_TableNumber(tableNumber);
+        List<ReservationDTO> reservationDTOs = new ArrayList<>();
+        for (Reservation reservation : reservations) {
+            reservationDTOs.add(new ReservationDTO(reservation.getTable().getTableNumber(), reservation.getReservationStartTime(), reservation.getReservationEndTime()));
+        }
+        return reservationDTOs;
+    }
 
     @Transactional
     public void addReservation(int tableNumber, LocalDateTime reservationStartTime, LocalDateTime reservationEndTime) {

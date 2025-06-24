@@ -5,6 +5,8 @@ import com.codecool.backend.service.ReservationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/reservations")
@@ -13,6 +15,11 @@ public class ReservationController {
 
     public ReservationController(ReservationService reservationService) {
         this.reservationService = reservationService;
+    }
+
+    @GetMapping("/{tableNumber}")
+    public List<ReservationDTO> findReservationsByTableNumber(@PathVariable int tableNumber){
+        return reservationService.getAllReservationsByTableNumber(tableNumber);
     }
 
     @PostMapping
