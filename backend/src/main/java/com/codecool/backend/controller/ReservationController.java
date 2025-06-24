@@ -17,15 +17,19 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @GetMapping("/{tableNumber}")
-    public List<ReservationDTO> findReservationsByTableNumber(@PathVariable int tableNumber){
+    @GetMapping("/table/{tableNumber}")
+    public List<ReservationDTO> findReservationsByTableNumber(@PathVariable int tableNumber) {
         return reservationService.getAllReservationsByTableNumber(tableNumber);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createReservation(@RequestBody ReservationDTO reservationDTO) {
-        reservationService.addReservation(reservationDTO.tableNumber(), reservationDTO.reservationStartTime(), reservationDTO.reservationEndTime());
+        reservationService.addReservation(reservationDTO.userEmail() ,reservationDTO.tableNumber(), reservationDTO.reservationStartTime(), reservationDTO.reservationEndTime());
     }
 
+    @GetMapping("/user/{userId}")
+    public List<ReservationDTO> findReservationsByUser(@PathVariable Long userId) {
+        return reservationService.getAllReservationsByUser(userId);
+    }
 }
