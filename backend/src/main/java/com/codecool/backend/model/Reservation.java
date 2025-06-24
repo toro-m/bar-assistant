@@ -10,6 +10,9 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToOne
     @JoinColumn(name = "table_id")
     private BarTable table;
     private LocalDateTime reservationStartTime;
