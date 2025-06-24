@@ -1,6 +1,7 @@
 package com.codecool.backend.service;
 
 import com.codecool.backend.DTO.TableDTO;
+import com.codecool.backend.exception.DuplicaTetableNumberException;
 import com.codecool.backend.model.BarTable;
 import com.codecool.backend.repository.BarTableRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,7 +16,6 @@ public class BarTableService {
     private final BarTableRepository barTableRepository;
 
     public BarTableService(BarTableRepository barTableRepository) {
-
         this.barTableRepository = barTableRepository;
     }
 
@@ -31,21 +31,25 @@ public class BarTableService {
     public TableDTO getTable(int tableNumber) {
         BarTable barTable = barTableRepository.findByTableNumber(tableNumber);
         if (barTable == null) {
-            throw new EntityNotFoundException("Table not found");
+            throw new EntityNotFoundException("Table number " + tableNumber+ " not found");
         }
         return new TableDTO(barTable.getTableNumber(), barTable.getAvailableSeats());
     }
 
 
     public void deleteTable(int tableNumber) {
-        barTableRepository.delete(barTableRepository.findByTableNumber(tableNumber));
+        BarTable barTable = barTableRepository.findByTableNumber(tableNumber);
+        if (barTable == null) {
+            throw new EntityNotFoundException("Table cannot be deleted, because table cannot be found.");
+        }
+        barTableRepository.delete(barTable);
     }
 
     @Transactional
     public void addTable(int tableNumber, int availableSeats) {
         BarTable barTable = new BarTable(tableNumber, availableSeats);
         if (barTableRepository.existsByTableNumber(barTable.getTableNumber())) {
-            throw new IllegalStateException("Table with number " + barTable.getTableNumber() + " already exists");
+            throw new DuplicaTetableNumberException(tableNumber+" already exists");
         }
          barTableRepository.save(barTable);
     }
@@ -58,7 +62,7 @@ public class BarTableService {
                 }
         if (tableUpdate.tableNumber() != existingTable.getTableNumber() &&
                 barTableRepository.existsByTableNumber(tableUpdate.tableNumber())) {
-            throw new IllegalStateException("Table with number " + tableUpdate.tableNumber() + " already exists");
+            throw new DuplicaTetableNumberException(tableNumber+" already exists, cannot update");
         }
 
         existingTable.setTableNumber(tableUpdate.tableNumber());
