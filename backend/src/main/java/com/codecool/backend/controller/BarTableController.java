@@ -1,8 +1,8 @@
 package com.codecool.backend.controller;
 
-import com.codecool.backend.DTO.NewTableDTO;
-import com.codecool.backend.model.BarTable;
+import com.codecool.backend.DTO.TableDTO;
 import com.codecool.backend.service.BarTableService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,24 +17,32 @@ public class BarTableController {
     }
 
     @GetMapping
-    public List<BarTable> getAllTables() {
+    public List<TableDTO> getAllTables() {
         return barTableService.getAllTables();
     }
 
     @GetMapping("/{tableNumber}")
-    public BarTable getTable(@PathVariable int tableNumber) {
-        return barTableService.getTable(tableNumber).orElse(null);
+    public TableDTO getTable(@PathVariable int tableNumber) {
+        return barTableService.getTable(tableNumber);
     }
 
     @PostMapping
-    public void addTable(@RequestBody NewTableDTO newTableDTO) {
-        //todo return 201 http code
-         barTableService.addTable(newTableDTO.tableNumber(), newTableDTO.numOfSeats());
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addTable(@RequestBody TableDTO tableDTO) {
+        barTableService.addTable(tableDTO.tableNumber(), tableDTO.numOfSeats());
+    }
+
+    @PatchMapping("/{tableNumber}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateTable(@PathVariable int tableNumber, @RequestBody TableDTO tableDTO) {
+        barTableService.updateTable(tableNumber, tableDTO);
+
     }
 
     @DeleteMapping("/{tableNumber}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTable(@PathVariable int tableNumber) {
-         barTableService.deleteTable(tableNumber);
+        barTableService.deleteTable(tableNumber);
     }
 
 
