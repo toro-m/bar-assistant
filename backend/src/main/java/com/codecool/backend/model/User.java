@@ -3,6 +3,7 @@ package com.codecool.backend.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "app_user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
