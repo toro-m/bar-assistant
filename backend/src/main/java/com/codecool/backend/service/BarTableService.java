@@ -1,7 +1,7 @@
 package com.codecool.backend.service;
 
 import com.codecool.backend.DTO.TableDTO;
-import com.codecool.backend.exception.DuplicaTetableNumberException;
+import com.codecool.backend.exception.DuplicateTableNumberException;
 import com.codecool.backend.model.BarTable;
 import com.codecool.backend.repository.BarTableRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -49,7 +49,7 @@ public class BarTableService {
     public void addTable(int tableNumber, int availableSeats) {
         BarTable barTable = new BarTable(tableNumber, availableSeats);
         if (barTableRepository.existsByTableNumber(barTable.getTableNumber())) {
-            throw new DuplicaTetableNumberException(tableNumber+" already exists");
+            throw new DuplicateTableNumberException(tableNumber+" already exists");
         }
          barTableRepository.save(barTable);
     }
@@ -62,7 +62,7 @@ public class BarTableService {
                 }
         if (tableUpdate.tableNumber() != existingTable.getTableNumber() &&
                 barTableRepository.existsByTableNumber(tableUpdate.tableNumber())) {
-            throw new DuplicaTetableNumberException(tableNumber+" already exists, cannot update");
+            throw new DuplicateTableNumberException(tableNumber+" already exists, cannot update");
         }
 
         existingTable.setTableNumber(tableUpdate.tableNumber());

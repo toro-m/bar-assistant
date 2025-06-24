@@ -10,6 +10,9 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToOne
     @JoinColumn(name = "table_id")
     private BarTable table;
     private LocalDateTime reservationStartTime;
@@ -18,14 +21,20 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(BarTable table, LocalDateTime reservationStartTime, LocalDateTime reservationEndTime) {
+    public Reservation(User user, BarTable table, LocalDateTime reservationStartTime, LocalDateTime reservationEndTime) {
+        this.user = user;
         this.table = table;
         this.reservationStartTime = reservationStartTime;
         this.reservationEndTime = reservationEndTime;
     }
 
-    public BarTable getTable() {
-        return table;
+    public String getUserEmail() {
+        return user.getEmail();
+    }
+
+
+    public int getTableNumber() {
+        return table.getTableNumber();
     }
 
     public void setTable(BarTable table) {

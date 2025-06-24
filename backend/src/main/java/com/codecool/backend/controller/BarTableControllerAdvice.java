@@ -1,6 +1,6 @@
 package com.codecool.backend.controller;
 
-import com.codecool.backend.exception.DuplicaTetableNumberException;
+import com.codecool.backend.exception.DuplicateTableNumberException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class BarTableControllerAdvice {
 
     @ResponseBody
-    @ExceptionHandler(DuplicaTetableNumberException.class)
+    @ExceptionHandler(DuplicateTableNumberException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public String duplicaTetableNumberExceptionHandler(DuplicaTetableNumberException ex) {
+    public String duplicateTableNumberExceptionHandler(DuplicateTableNumberException ex) {
         return ex.getMessage();
     }
 
