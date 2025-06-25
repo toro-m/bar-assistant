@@ -34,34 +34,56 @@ const AllTablesPage = () => {
 
   const handleReserveClick = (tableNumber) => {
     setSelectedTable(tableNumber);
+    setReservationDateTime(null);
     setIsModalOpen(true);
   };
 
-  const handleConfirmReservation = async () => {
+  const handleConfirmReservation = async (reservationDateTime) => {
+    if (!reservationDateTime) return;
+    
     setIsProcessing(true);
     try {
-      const response = await fetch(`/api/tables/reserve/${selectedTable}`, {
-        method: 'PATCH',
+      // Create dates in local timezone
+      const startTime = new Date(reservationDateTime);
+      const endTime = new Date(startTime.getTime() + 60 * 60 * 1000); // Add 1 hour
+
+      // Format dates to ISO strings without timezone conversion
+      const formatToLocalISO = (date) => {
+        const pad = (n) => n.toString().padStart(2, '0');
+        const year = date.getFullYear();
+        const month = pad(date.getMonth() + 1);
+        const day = pad(date.getDate());
+        const hours = pad(date.getHours());
+        const minutes = pad(date.getMinutes());
+        return `${year}-${month}-${day}T${hours}:${minutes}:00`;
+      };
+
+      //TODO: implement userEmail from localstorage
+      const userEmail ='valami@test.com';
+      
+      const response = await fetch('/api/reservations', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          reservationTime: reservationDateTime.toISOString()
+          userEmail,
+          tableNumber: selectedTable,
+          reservationStartTime: formatToLocalISO(startTime),
+          reservationEndTime: formatToLocalISO(endTime)
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to reserve table');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to create reservation');
       }
 
-      const success = await response.json();
-      if (success) {
-        await fetchTables();
-      } else {
-        console.error('Failed to reserve table. It might already be reserved.');
-      }
+      await fetchTables();
+      
     } catch (err) {
-      console.error('Error reserving table:', err);
+      console.error('Error creating reservation:', err);
+      setError(err.message || 'Failed to create reservation');
     } finally {
       setIsProcessing(false);
       setIsModalOpen(false);

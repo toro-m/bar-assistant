@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Box, Typography } from '@mui/material';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography,
+  Box,
+  Stepper,
+  Step,
+  StepLabel,
+  CircularProgress
+} from '@mui/material';
 import ReservationCalendar from './ReservationCalendar';
 
 const TableConfirmation = ({
@@ -7,35 +19,56 @@ const TableConfirmation = ({
   tableNumber,
   onConfirm,
   onCancel,
-  isProcessing = false
+  isProcessing = false,
 }) => {
   const [selectedDateTime, setSelectedDateTime] = useState(null);
-  const [showCalendar, setShowCalendar] = useState(true);
+  const [activeStep, setActiveStep] = useState(0);
 
   const handleTimeSelect = (dateTime) => {
     setSelectedDateTime(dateTime);
-    setShowCalendar(false);
+    setActiveStep(1);
   };
 
-  const handleBackToCalendar = () => {
-    setShowCalendar(true);
+  const handleBack = () => {
+    if (activeStep === 0) {
+      onCancel();
+    } else {
+      setActiveStep(prev => prev - 1);
+    }
   };
 
-  const handleConfirmReservation = () => {
-    onConfirm(selectedDateTime);
+  const handleConfirm = () => {
+    if (selectedDateTime) {
+      onConfirm(selectedDateTime);
+    } else {
+      console.error('No date/time selected');
+    }
   };
+
+  const steps = ['Select Date & Time', 'Confirm Reservation'];
 
   return (
     <Dialog
       open={isOpen}
-      onClose={onCancel}
+      onClose={!isProcessing ? onCancel : undefined}
       maxWidth="md"
       fullWidth
+      disableEscapeKeyDown={isProcessing}
     >
-      <DialogTitle>Reserve Table {tableNumber}</DialogTitle>
+      <DialogTitle>
+        <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 2 }}>
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+      </DialogTitle>
+      
       <DialogContent>
-        {showCalendar ? (
+        {activeStep === 0 ? (
           <ReservationCalendar
+            tableNumber={tableNumber}
             onTimeSelect={handleTimeSelect}
             onCancel={onCancel}
           />
@@ -48,35 +81,36 @@ const TableConfirmation = ({
               Table: {tableNumber}
             </Typography>
             <Typography variant="body1" paragraph>
-              Date & Time: {selectedDateTime?.toLocaleString()}
+              Date: {selectedDateTime?.toLocaleDateString()}
             </Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 3 }}>
-              <Button
-                variant="outlined"
-                onClick={handleBackToCalendar}
-                disabled={isProcessing}
-              >
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleConfirmReservation}
-                disabled={isProcessing}
-              >
-                {isProcessing ? 'Processing...' : 'Confirm Reservation'}
-              </Button>
-            </Box>
+            <Typography variant="body1" paragraph>
+              Time: {selectedDateTime?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </Typography>
           </Box>
         )}
       </DialogContent>
-      {!showCalendar && (
-        <DialogActions>
-          <Button onClick={onCancel} disabled={isProcessing}>
-            Cancel
+
+      <DialogActions sx={{ p: 3, pt: 0 }}>
+        <Button
+          onClick={handleBack}
+          disabled={isProcessing}
+          color="inherit"
+        >
+          {activeStep === 0 ? 'Cancel' : 'Back'}
+        </Button>
+        
+        {activeStep === 1 && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleConfirm}
+            disabled={isProcessing || !selectedDateTime}
+            startIcon={isProcessing ? <CircularProgress size={20} /> : null}
+          >
+            {isProcessing ? 'Processing...' : 'Confirm Reservation'}
           </Button>
-        </DialogActions>
-      )}
+        )}
+      </DialogActions>
     </Dialog>
   );
 };
