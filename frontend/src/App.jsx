@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import AllTables from './pages/AllTablesPage.jsx';
 import './App.css';
+import LoginPage from "./pages/LoginPage.jsx";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         
         <main>
           <Routes>
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={
               <div className="home">
                 <h1>Welcome to Bar Assistant</h1>
