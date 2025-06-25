@@ -3,6 +3,8 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Box, Button, Typography, Grid, CircularProgress } from '@mui/material';
 
+//Todo change it to the back end
+
 const TIME_SLOTS = [
   '10:00', '11:00', '12:00', '13:00', '14:00',
   '15:00', '16:00', '17:00', '18:00', '19:00',

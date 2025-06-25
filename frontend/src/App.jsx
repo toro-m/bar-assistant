@@ -1,31 +1,44 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import AllTables from './pages/AllTablesPage.jsx';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import AllTablesPage from './pages/AllTablesPage.jsx';
 import './App.css';
+import LoginPage from "./pages/LoginPage.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import NoPathErrorPage from "./pages/NoPathErrorPage.jsx";
+import NavBar from "./components/NavBar.jsx";
+import {Component} from "react";
+import RegisterPage from "./pages/RegisterPage.jsx";
+
+
+
 
 function App() {
+  const location = useLocation();
+  const isLoginPage = location.pathname === '/login';
+  const isRegisterPage = location.pathname === '/register';
+
+  return (
+    <div className="app">
+      {!isLoginPage && !isRegisterPage && <NavBar />}
+      
+      <main>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/home" element={< HomePage />} />
+          <Route path="/tables" element={<AllTablesPage />} />
+          <Route path="*" element={<NoPathErrorPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+        </Routes>
+      </main>
+    </div>
+  );
+}
+
+function AppWrapper() {
   return (
     <Router>
-      <div className="app">
-        <nav className="nav">
-          <Link to="/" className="nav-link">Home</Link>
-          <Link to="/tables" className="nav-link">View All Tables</Link>
-        </nav>
-        
-        <main>
-          <Routes>
-            <Route path="/" element={
-              <div className="home">
-                <h1>Welcome to Bar Assistant</h1>
-                <p>Manage your bar's table reservations with ease.</p>
-                <Link to="/tables" className="cta-button">View Tables</Link>
-              </div>
-            } />
-            <Route path="/tables" element={<AllTables />} />
-          </Routes>
-        </main>
-      </div>
+      <App />
     </Router>
   );
 }
 
-export default App;
+export default AppWrapper;

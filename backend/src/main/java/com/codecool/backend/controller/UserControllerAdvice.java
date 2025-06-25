@@ -1,11 +1,13 @@
 package com.codecool.backend.controller;
 
 import com.codecool.backend.exception.UserAlreadyExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @ControllerAdvice
 public class UserControllerAdvice {
@@ -16,4 +18,13 @@ public class UserControllerAdvice {
     public String handleUserAlreadyExistsException(UserAlreadyExistsException exception) {
         return exception.getMessage();
     }
+
+    @ResponseBody
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleEntityNotFoundException(EntityNotFoundException exception) {
+        return exception.getMessage() + " At login.";
+    }
+
+
 }
