@@ -3,6 +3,7 @@ import AllTablesPage from './pages/AllTablesPage.jsx';
 import './App.css';
 import LoginPage from "./pages/LoginPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
+import NoPathErrorPage from "./pages/NoPathErrorPage.jsx";
 
 function NavBar() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/home" element={< HomePage />} />
           <Route path="/tables" element={<AllTablesPage />} />
+          <Route path="*" element={<NoPathErrorPage />} />
         </Routes>
       </main>
     </div>
