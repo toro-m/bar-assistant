@@ -39,27 +39,27 @@ const AllTablesPage = () => {
     setIsModalOpen(true);
   };
 
+  const formatToLocalISO = (date) => {
+    const pad = (n) => n.toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1);
+    const day = pad(date.getDate());
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+    return `${year}-${month}-${day}T${hours}:${minutes}:00`;
+  };
+
   const handleConfirmReservation = async (reservationDateTime) => {
     if (!reservationDateTime) return;
-    
+
     setIsProcessing(true);
     try {
       const startTime = new Date(reservationDateTime);
       const endTime = new Date(startTime.getTime() + 60 * 60 * 1000);
 
-      const formatToLocalISO = (date) => {
-        const pad = (n) => n.toString().padStart(2, '0');
-        const year = date.getFullYear();
-        const month = pad(date.getMonth() + 1);
-        const day = pad(date.getDate());
-        const hours = pad(date.getHours());
-        const minutes = pad(date.getMinutes());
-        return `${year}-${month}-${day}T${hours}:${minutes}:00`;
-      };
-
       //TODO: implement userEmail from localstorage
       const userEmail ='valami@test.com';
-      
+
       const response = await fetch('/api/reservations', {
         method: 'POST',
         headers: {
@@ -79,7 +79,7 @@ const AllTablesPage = () => {
       }
 
       await fetchTables();
-      
+
     } catch (err) {
       console.error('Error creating reservation:', err);
       setError(err.message || 'Failed to create reservation');
