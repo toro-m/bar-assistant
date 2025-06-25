@@ -46,14 +46,12 @@ const ReservationCalendar = ({ tableNumber, onTimeSelect}) => {
     const slotDate = new Date(selectedDate);
     slotDate.setHours(hours, minutes, 0, 0);
     const slotStart = new Date(slotDate);
-    const slotEnd = new Date(slotStart.getTime() + 60 * 60 * 1000); // 1 hour slot
+    const slotEnd = new Date(slotStart.getTime() + 60 * 60 * 1000);
 
-    // Check if slot is in the past
     if (slotEnd < new Date()) {
       return false;
     }
 
-    // Check against existing reservations
     return !reservations.some(reservation => {
       const resStart = new Date(reservation.reservationStartTime);
       const resEnd = new Date(reservation.reservationEndTime);
@@ -75,11 +73,9 @@ const ReservationCalendar = ({ tableNumber, onTimeSelect}) => {
     setSelectedTime(time);
     if (selectedDate) {
       const [hours, minutes] = time.split(':').map(Number);
-      // Create a new date object with the selected date and time in local timezone
       const localDate = new Date(selectedDate);
       localDate.setHours(hours, minutes, 0, 0);
       
-      // Create a new date string that won't be affected by timezone conversion
       const year = localDate.getFullYear();
       const month = String(localDate.getMonth() + 1).padStart(2, '0');
       const day = String(localDate.getDate()).padStart(2, '0');

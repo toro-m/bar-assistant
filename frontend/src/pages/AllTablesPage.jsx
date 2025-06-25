@@ -44,11 +44,9 @@ const AllTablesPage = () => {
     
     setIsProcessing(true);
     try {
-      // Create dates in local timezone
       const startTime = new Date(reservationDateTime);
       const endTime = new Date(startTime.getTime() + 60 * 60 * 1000);
 
-      // Format dates to ISO strings without timezone conversion
       const formatToLocalISO = (date) => {
         const pad = (n) => n.toString().padStart(2, '0');
         const year = date.getFullYear();
@@ -95,9 +93,7 @@ const AllTablesPage = () => {
 
   const handleCancelReservation = () => {
     setIsModalOpen(false);
-    // Reset the selected time when closing the modal
     setReservationDateTime(null);
-    // Small delay to ensure the modal is fully closed before resetting the table
     setTimeout(() => {
       setSelectedTable(null);
     }, 300);
