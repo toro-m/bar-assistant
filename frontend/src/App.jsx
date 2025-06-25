@@ -5,16 +5,20 @@ import LoginPage from "./pages/LoginPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import NoPathErrorPage from "./pages/NoPathErrorPage.jsx";
 import NavBar from "./components/NavBar.jsx";
+import {Component} from "react";
+import RegisterPage from "./pages/RegisterPage.jsx";
+
 
 
 
 function App() {
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
+  const isRegisterPage = location.pathname === '/register';
 
   return (
     <div className="app">
-      {!isLoginPage && <NavBar />}
+      {!isLoginPage && !isRegisterPage && <NavBar />}
       
       <main>
         <Routes>
@@ -22,6 +26,7 @@ function App() {
           <Route path="/home" element={< HomePage />} />
           <Route path="/tables" element={<AllTablesPage />} />
           <Route path="*" element={<NoPathErrorPage />} />
+            <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </main>
     </div>

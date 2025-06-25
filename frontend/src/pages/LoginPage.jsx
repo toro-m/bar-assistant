@@ -95,7 +95,15 @@ const LoginPage = () => {
                                 sx={{ mt: 3, mb: 2 }}
                             >
                                 Sign In
-                            </Button>
+                            </Button>  <Button
+                            type="button"
+                            onClick={() => navigate('/register')}
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                         Register
+                        </Button>
                         </Box>
                     </Paper>
                 </Box>
