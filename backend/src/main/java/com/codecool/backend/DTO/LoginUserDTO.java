@@ -1,4 +1,4 @@
 package com.codecool.backend.DTO;
 
-public record LoginUserInfoDTO() {
+public record LoginUserDTO(String email, String password) {
 }
