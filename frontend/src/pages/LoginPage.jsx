@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Container,
     TextField,
@@ -17,6 +18,7 @@ const LoginPage = () => {
         email: '',
         password: ''
     });
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -36,9 +38,10 @@ const LoginPage = () => {
             });
 
             if (!response.ok) throw new Error("Login failed");
-            //todo save email to local storage
-            // todo use router not window.location.href
-            window.location.href = "/all_questions.html";
+            localStorage.setItem("email", formData.email);
+
+            navigate('/tables');
+
         } catch (error) {
             console.error("Login error:", error);
         }

@@ -57,8 +57,7 @@ const AllTablesPage = () => {
       const startTime = new Date(reservationDateTime);
       const endTime = new Date(startTime.getTime() + 60 * 60 * 1000);
 
-      //TODO: implement userEmail from localstorage
-      const userEmail ='valami@test.com';
+      const userEmail = localStorage.getItem('email');
 
       const response = await fetch('/api/reservations', {
         method: 'POST',
