@@ -5,11 +5,8 @@ const TableCard = ({ table, onReserve }) => {
     return (
         <div className={`table-card ${table.reserved ? 'reserved' : 'available'}`}>
             <div>
-                <h3>Table {table.tableNum}</h3>
-                <span className="status">
-          {table.reserved ? 'Reserved' : 'Available'}
-        </span>
-                <p className="seats">Seats: {table.availableSeats}</p>
+                <h3>Table {table.tableNumber}</h3>
+                <p className="seats">Seats: {table.numOfSeats}</p>
             </div>
             {!table.reserved && (
                 <button
