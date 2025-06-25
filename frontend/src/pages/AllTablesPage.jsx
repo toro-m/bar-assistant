@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import TableCard from "../components/TableCard.jsx";
 import TableConfirmation from "../components/TableConfirmation";
 import '../styles/AllTablesPage.css';
+import ReservationCalendar from "../components/ReservationCalendar.jsx";
 
 const AllTablesPage = () => {
   const [tables, setTables] = useState([]);
@@ -45,7 +46,7 @@ const AllTablesPage = () => {
     try {
       // Create dates in local timezone
       const startTime = new Date(reservationDateTime);
-      const endTime = new Date(startTime.getTime() + 60 * 60 * 1000); // Add 1 hour
+      const endTime = new Date(startTime.getTime() + 60 * 60 * 1000);
 
       // Format dates to ISO strings without timezone conversion
       const formatToLocalISO = (date) => {
@@ -94,8 +95,12 @@ const AllTablesPage = () => {
 
   const handleCancelReservation = () => {
     setIsModalOpen(false);
-    setSelectedTable(null);
+    // Reset the selected time when closing the modal
     setReservationDateTime(null);
+    // Small delay to ensure the modal is fully closed before resetting the table
+    setTimeout(() => {
+      setSelectedTable(null);
+    }, 300);
   };
 
   const handleDateTimeChange = (dateTime) => {
@@ -133,16 +138,21 @@ const AllTablesPage = () => {
           />
         ))}
       </div>
-      
+
       <TableConfirmation
-        isOpen={isModalOpen}
-        tableNumber={selectedTable}
-        onConfirm={handleConfirmReservation}
-        onCancel={handleCancelReservation}
-        isProcessing={isProcessing}
-        onDateTimeChange={handleDateTimeChange}
-        reservationDateTime={reservationDateTime}
-      />
+          key={`${isModalOpen}-${selectedTable}`}
+          isOpen={isModalOpen}
+          tableNumber={selectedTable}
+          onConfirm={handleConfirmReservation}
+          onCancel={handleCancelReservation}
+          isProcessing={isProcessing}
+      >
+        <ReservationCalendar
+            tableNumber={selectedTable}
+            onTimeSelect={handleDateTimeChange}
+            key={`calendar-${isModalOpen}-${selectedTable}`}
+        />
+      </TableConfirmation>
     </div>
   );
 };

@@ -9,7 +9,7 @@ const TIME_SLOTS = [
   '20:00', '21:00', '22:00', '23:00'
 ];
 
-const ReservationCalendar = ({ tableNumber, onTimeSelect, onCancel }) => {
+const ReservationCalendar = ({ tableNumber, onTimeSelect}) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
   const [reservations, setReservations] = useState([]);
@@ -152,19 +152,6 @@ const ReservationCalendar = ({ tableNumber, onTimeSelect, onCancel }) => {
         })}
       </Grid>
 
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
-        <Button variant="outlined" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => selectedTime && onTimeSelect(selectedTime)}
-          disabled={!selectedTime}
-        >
-          Select Time
-        </Button>
-      </Box>
     </Box>
   );
 };
