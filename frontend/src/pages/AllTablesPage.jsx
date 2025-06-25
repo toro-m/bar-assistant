@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import TableCard from "../components/TableCard.jsx";
-import TableConfirmation from "../components/TableConfirmation";
+import ReservationConfirmation from "../components/ReservationConfirmation.jsx";
 import '../styles/AllTablesPage.css';
 import ReservationCalendar from "../components/ReservationCalendar.jsx";
 
@@ -139,7 +139,7 @@ const AllTablesPage = () => {
         ))}
       </div>
 
-      <TableConfirmation
+      <ReservationConfirmation
           key={`${isModalOpen}-${selectedTable}`}
           isOpen={isModalOpen}
           tableNumber={selectedTable}
@@ -152,7 +152,7 @@ const AllTablesPage = () => {
             onTimeSelect={handleDateTimeChange}
             key={`calendar-${isModalOpen}-${selectedTable}`}
         />
-      </TableConfirmation>
+      </ReservationConfirmation>
     </div>
   );
 };

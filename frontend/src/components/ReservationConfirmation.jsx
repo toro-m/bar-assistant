@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import ReservationCalendar from './ReservationCalendar';
 
-const TableConfirmation = ({
+const ReservationConfirmation = ({
   isOpen,
   tableNumber,
   onConfirm,
@@ -115,4 +115,4 @@ const TableConfirmation = ({
   );
 };
 
-export default TableConfirmation;
+export default ReservationConfirmation;
