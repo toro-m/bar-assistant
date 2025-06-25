@@ -9,7 +9,7 @@ function App() {
       <div className="app">
         <nav className="nav">
           <Link to="/" className="nav-link">Home</Link>
-          <Link to="/all-tables" className="nav-link">View All Tables</Link>
+          <Link to="/tables" className="nav-link">View All Tables</Link>
         </nav>
         
         <main>
@@ -19,10 +19,10 @@ function App() {
               <div className="home">
                 <h1>Welcome to Bar Assistant</h1>
                 <p>Manage your bar's table reservations with ease.</p>
-                <Link to="/all-tables" className="cta-button">View Tables</Link>
+                <Link to="/tables" className="cta-button">View Tables</Link>
               </div>
             } />
-            <Route path="/all-tables" element={<AllTables />} />
+            <Route path="/tables" element={<AllTables />} />
           </Routes>
         </main>
       </div>
