@@ -4,15 +4,9 @@ import './App.css';
 import LoginPage from "./pages/LoginPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import NoPathErrorPage from "./pages/NoPathErrorPage.jsx";
+import NavBar from "./components/NavBar.jsx";
 
-function NavBar() {
-  return (
-    <nav className="nav">
-      <Link to="/home" className="nav-link">Home</Link>
-      <Link to="/tables" className="nav-link">View All Tables</Link>
-    </nav>
-  );
-}
+
 
 function App() {
   const location = useLocation();
