@@ -58,9 +58,7 @@ class BarTableServiceTest {
     @Test
     void testGetTable_whenTableDoesNotExist_throwException() {
         when(barTableRepository.findByTableNumber(1)).thenReturn(null);
-        assertThrows(EntityNotFoundException.class, () -> {
-            barTableService.getTable(1);
-        });
+        assertThrows(EntityNotFoundException.class, () -> barTableService.getTable(1));
     }
 
     @Test
@@ -75,9 +73,7 @@ class BarTableServiceTest {
     @Test
     void testDeleteTable_whenTableDoesNotExist_throwException() {
         when(barTableRepository.findByTableNumber(1)).thenReturn(null);
-        assertThrows(EntityNotFoundException.class, () -> {
-            barTableService.deleteTable(1);
-        });
+        assertThrows(EntityNotFoundException.class, () -> barTableService.deleteTable(1));
     }
 
     @Test
@@ -91,9 +87,7 @@ class BarTableServiceTest {
     @Test
     void testAddTable_whenTableAlreadyExists_throwException() {
         when(barTableRepository.existsByTableNumber(1)).thenReturn(true);
-        assertThrows(DuplicateTableNumberException.class, () -> {
-            barTableService.addTable(1, 4);
-        });
+        assertThrows(DuplicateTableNumberException.class, () -> barTableService.addTable(1, 4));
     }
 
     @Test
@@ -106,18 +100,14 @@ class BarTableServiceTest {
     @Test
     void testUpdateTable_whenTableDoesNotExist_throwException() {
         when(barTableRepository.findByTableNumber(1)).thenReturn(null);
-        assertThrows(EntityNotFoundException.class, () -> {
-            barTableService.updateTable(1, new TableDTO(1, 4));
-        });
+        assertThrows(EntityNotFoundException.class, () -> barTableService.updateTable(1, new TableDTO(1, 4)));
     }
 
 @Test
     void testUpdateTable_whenTableWithToUpdatedTableNumberAlreadyExists_throwsException() {
         when(barTableRepository.findByTableNumber(1)).thenReturn(new BarTable(1, 4));
         when(barTableRepository.existsByTableNumber(2)).thenReturn(true);
-        assertThrows(DuplicateTableNumberException.class, () -> {
-            barTableService.updateTable(1, new TableDTO(2, 4));
-        });
+        assertThrows(DuplicateTableNumberException.class, () -> barTableService.updateTable(1, new TableDTO(2, 4)));
     }
 
     @Test
