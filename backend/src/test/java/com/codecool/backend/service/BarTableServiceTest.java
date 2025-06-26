@@ -1,6 +1,7 @@
 package com.codecool.backend.service;
 
 import com.codecool.backend.DTO.TableDTO;
+import com.codecool.backend.exception.DuplicateTableNumberException;
 import com.codecool.backend.model.BarTable;
 import com.codecool.backend.repository.BarTableRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -94,6 +95,19 @@ class BarTableServiceTest {
         verify(barTableRepository, times(1)).delete(table1);
     }
 
+@Test
+    void testAddTable_whenTableAlreadyExists_throwException() {
+        when(barTableRepository.existsByTableNumber(1)).thenReturn(true);
+        assertThrows(DuplicateTableNumberException.class, () -> {
+            barTableService.addTable(1, 4);
+        });
+    }
 
+    @Test
+    void testAddTable_whenTableCanBeAdded_addTable() {
+        when(barTableRepository.existsByTableNumber(1)).thenReturn(false);
+        barTableService.addTable(1, 4);
+        verify(barTableRepository, times(1)).save(new BarTable(1, 4));
+    }
 
 }
