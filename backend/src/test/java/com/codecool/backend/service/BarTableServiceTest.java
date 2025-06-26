@@ -95,7 +95,7 @@ class BarTableServiceTest {
         verify(barTableRepository, times(1)).delete(table1);
     }
 
-@Test
+    @Test
     void testAddTable_whenTableAlreadyExists_throwException() {
         when(barTableRepository.existsByTableNumber(1)).thenReturn(true);
         assertThrows(DuplicateTableNumberException.class, () -> {
