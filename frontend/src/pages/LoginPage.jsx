@@ -10,6 +10,7 @@ import {
     CssBaseline
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import LoginError from "../components/LoginError.jsx";
 
 const theme = createTheme();
 
@@ -18,6 +19,7 @@ const LoginPage = () => {
         email: '',
         password: ''
     });
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -26,6 +28,7 @@ const LoginPage = () => {
             ...prev,
             [name]: value
         }));
+        if (error) setError('');
     };
 
     const handleSubmit = async (e) => {
@@ -37,13 +40,17 @@ const LoginPage = () => {
                 body: JSON.stringify({ email: formData.email, password: formData.password })
             });
 
-            if (!response.ok) throw new Error("Login failed");
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || "Login failed. Please check your credentials and try again.");
+            }
+            
             localStorage.setItem("email", formData.email);
-
             navigate('/tables');
 
         } catch (error) {
             console.error("Login error:", error);
+            setError(error.message || "An error occurred during login. Please try again.");
         }
     };
 
@@ -63,6 +70,12 @@ const LoginPage = () => {
                         <Typography component="h1" variant="h5" align="center" mb={3}>
                             Sign in
                         </Typography>
+
+                        <LoginError
+                            error={error}
+                            onClose={() => setError('')}
+                        />
+
                         <Box component="form" onSubmit={handleSubmit} noValidate>
                             <TextField
                                 margin="normal"
@@ -75,6 +88,7 @@ const LoginPage = () => {
                                 autoFocus
                                 value={formData.email}
                                 onChange={handleChange}
+                                error={!!error}
                             />
                             <TextField
                                 margin="normal"
@@ -87,6 +101,7 @@ const LoginPage = () => {
                                 autoComplete="current-password"
                                 value={formData.password}
                                 onChange={handleChange}
+                                error={!!error}
                             />
                             <Button
                                 type="submit"
@@ -95,15 +110,16 @@ const LoginPage = () => {
                                 sx={{ mt: 3, mb: 2 }}
                             >
                                 Sign In
-                            </Button>  <Button
-                            type="button"
-                            onClick={() => navigate('/register')}
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                         Register
-                        </Button>
+                            </Button>
+                            <Button
+                                type="button"
+                                fullWidth
+                                variant="outlined"
+                                onClick={() => navigate('/register')}
+                                sx={{ mt: 1, mb: 2 }}
+                            >
+                                Don't have an account? Register
+                            </Button>
                         </Box>
                     </Paper>
                 </Box>
