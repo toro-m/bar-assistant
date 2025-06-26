@@ -143,7 +143,6 @@ const ReservationCalendar = ({ tableNumber, onTimeSelect}) => {
                 }}
               >
                 {time}
-                {!isAvailable && <span style={{ position: 'absolute', right: 8 }}>✕</span>}
               </Button>
             </Grid>
           );
