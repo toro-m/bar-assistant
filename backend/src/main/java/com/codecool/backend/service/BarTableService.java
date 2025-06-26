@@ -63,7 +63,7 @@ public class BarTableService {
                 }
         if (tableUpdate.tableNumber() != existingTable.getTableNumber() &&
                 barTableRepository.existsByTableNumber(tableUpdate.tableNumber())) {
-            throw new DuplicateTableNumberException(tableNumber+" already exists, cannot update");
+            throw new DuplicateTableNumberException(tableUpdate.tableNumber() +" already exists, cannot update");
         }
 
         existingTable.setTableNumber(tableUpdate.tableNumber());
