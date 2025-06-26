@@ -110,5 +110,40 @@ class BarTableServiceTest {
         verify(barTableRepository, times(1)).save(result);
     }
 
+    @Test
+    void testUpdateTable_whenTableDoesNotExist_throwException() {
+        when(barTableRepository.findByTableNumber(1)).thenReturn(null);
+        assertThrows(EntityNotFoundException.class, () -> {
+            barTableService.updateTable(1, new TableDTO(1, 4));
+        });
+    }
+
+@Test
+    void testUpdateTable_whenTableWithToUpdatedTableNumberAlreadyExists_throwsException() {
+        when(barTableRepository.findByTableNumber(1)).thenReturn(new BarTable(1, 4));
+        when(barTableRepository.existsByTableNumber(2)).thenReturn(true);
+        assertThrows(DuplicateTableNumberException.class, () -> {
+            barTableService.updateTable(1, new TableDTO(2, 4));
+        });
+    }
+
+    @Test
+    void testUpdateTable_whenTableExistsAndNewTableNumberIsUnique_updatesSuccessfully() {
+        int currentTableNumber = 1;
+        int newTableNumber = 2;
+        int newNumOfSeats = 6;
+
+        BarTable existingTable = new BarTable(currentTableNumber, 4);
+        TableDTO tableUpdate = new TableDTO(newTableNumber, newNumOfSeats);
+
+        when(barTableRepository.findByTableNumber(currentTableNumber)).thenReturn(existingTable);
+        when(barTableRepository.existsByTableNumber(newTableNumber)).thenReturn(false);
+
+        barTableService.updateTable(currentTableNumber, tableUpdate);
+
+        assertEquals(newTableNumber, existingTable.getTableNumber());
+        assertEquals(newNumOfSeats, existingTable.getAvailableSeats());
+        verify(barTableRepository, times(1)).save(existingTable);
+    }
 
 }
