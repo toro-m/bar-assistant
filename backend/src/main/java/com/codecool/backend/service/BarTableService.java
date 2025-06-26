@@ -46,12 +46,13 @@ public class BarTableService {
     }
 
     @Transactional
-    public void addTable(int tableNumber, int availableSeats) {
+    public BarTable addTable(int tableNumber, int availableSeats) {
         BarTable barTable = new BarTable(tableNumber, availableSeats);
         if (barTableRepository.existsByTableNumber(barTable.getTableNumber())) {
             throw new DuplicateTableNumberException(tableNumber+" already exists");
         }
          barTableRepository.save(barTable);
+        return barTable;
     }
 
     @Transactional
@@ -62,7 +63,7 @@ public class BarTableService {
                 }
         if (tableUpdate.tableNumber() != existingTable.getTableNumber() &&
                 barTableRepository.existsByTableNumber(tableUpdate.tableNumber())) {
-            throw new DuplicateTableNumberException(tableNumber+" already exists, cannot update");
+            throw new DuplicateTableNumberException(tableUpdate.tableNumber() +" already exists, cannot update");
         }
 
         existingTable.setTableNumber(tableUpdate.tableNumber());
