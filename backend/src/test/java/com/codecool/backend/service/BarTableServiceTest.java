@@ -28,13 +28,6 @@ class BarTableServiceTest {
 
     @Mock
     private BarTableRepository barTableRepository;
-
-    @Test
-    void valamiTest() {
-        List<TableDTO> allTables = barTableService.getAllTables();
-        assertEquals(0, allTables.size());
-    }
-
     @Test
     void testGetAllTables_whenNoTablesExist_returnEmptyList() {
         List<TableDTO> allTables = barTableService.getAllTables();
