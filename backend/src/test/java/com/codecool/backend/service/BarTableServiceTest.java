@@ -106,8 +106,9 @@ class BarTableServiceTest {
     @Test
     void testAddTable_whenTableCanBeAdded_addTable() {
         when(barTableRepository.existsByTableNumber(1)).thenReturn(false);
-        barTableService.addTable(1, 4);
-        verify(barTableRepository, times(1)).save(new BarTable(1, 4));
+        BarTable result = barTableService.addTable(1, 4);
+        verify(barTableRepository, times(1)).save(result);
     }
+
 
 }

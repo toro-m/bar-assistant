@@ -46,12 +46,13 @@ public class BarTableService {
     }
 
     @Transactional
-    public void addTable(int tableNumber, int availableSeats) {
+    public BarTable addTable(int tableNumber, int availableSeats) {
         BarTable barTable = new BarTable(tableNumber, availableSeats);
         if (barTableRepository.existsByTableNumber(barTable.getTableNumber())) {
             throw new DuplicateTableNumberException(tableNumber+" already exists");
         }
          barTableRepository.save(barTable);
+        return barTable;
     }
 
     @Transactional
