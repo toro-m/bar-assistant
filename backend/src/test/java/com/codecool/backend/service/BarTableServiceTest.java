@@ -64,12 +64,9 @@ class BarTableServiceTest {
     @Test
     void testGetTable_whenTableDoesNotExist_throwException() {
         when(barTableRepository.findByTableNumber(1)).thenReturn(null);
-
-        EntityNotFoundException exception =
-                assertThrows(EntityNotFoundException.class, () -> {
-                    barTableService.getTable(1);
-                });
-
+        assertThrows(EntityNotFoundException.class, () -> {
+            barTableService.getTable(1);
+        });
     }
 
     @Test
@@ -81,6 +78,21 @@ class BarTableServiceTest {
         assertEquals(table1.getAvailableSeats(), result.numOfSeats());
     }
 
+    @Test
+    void testDeleteTable_whenTableDoesNotExist_throwException() {
+        when(barTableRepository.findByTableNumber(1)).thenReturn(null);
+        assertThrows(EntityNotFoundException.class, () -> {
+            barTableService.deleteTable(1);
+        });
+    }
+
+    @Test
+    void testDeleteTable_whenTableExists_deleteTable() {
+        BarTable table1 = new BarTable(1, 4);
+        when(barTableRepository.findByTableNumber(1)).thenReturn(table1);
+        barTableService.deleteTable(1);
+        verify(barTableRepository, times(1)).delete(table1);
+    }
 
 
 
