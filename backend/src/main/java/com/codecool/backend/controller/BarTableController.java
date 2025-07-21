@@ -3,6 +3,7 @@ package com.codecool.backend.controller;
 import com.codecool.backend.DTO.TableDTO;
 import com.codecool.backend.service.BarTableService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,12 +29,14 @@ public class BarTableController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public void addTable(@RequestBody TableDTO tableDTO) {
         barTableService.addTable(tableDTO.tableNumber(), tableDTO.numOfSeats());
     }
 
     @PatchMapping("/{tableNumber}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     public void updateTable(@PathVariable int tableNumber, @RequestBody TableDTO tableDTO) {
         barTableService.updateTable(tableNumber, tableDTO);
 
@@ -41,6 +44,7 @@ public class BarTableController {
 
     @DeleteMapping("/{tableNumber}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteTable(@PathVariable int tableNumber) {
         barTableService.deleteTable(tableNumber);
     }
