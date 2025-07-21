@@ -12,6 +12,7 @@ public class User {
     private String password;
     @Column(unique = true)
     private String email;
+    private Role role;
 
     public User() {
     }
@@ -20,6 +21,11 @@ public class User {
         this.fullName = fullName;
         this.password = password;
         this.email = email;
+        role = Role.ROLE_USER;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     public Long getId() {
