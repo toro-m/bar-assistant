@@ -20,6 +20,8 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
+    //todo - re write login with tocken usage
+
 
     @Mock
     private UserRepository userRepository;
@@ -75,15 +77,7 @@ class UserServiceTest {
         verify(userRepository, never()).save(any(User.class));
     }
 
-    @Test
-    void testLogin_WhenCorrectCredentials_ReturnsTrue() {
-        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(testUser);
 
-        boolean result = userService.login(testLoginDTO);
-
-        assertTrue(result);
-        verify(userRepository).findByEmail(TEST_EMAIL);
-    }
 
     @Test
     void testLogin_WhenNonExistentEmail_ThrowsException() {
@@ -97,14 +91,5 @@ class UserServiceTest {
         verify(userRepository).findByEmail(TEST_EMAIL);
     }
 
-    @Test
-    void testLogin_WhenWrongPassword_ReturnsFalse() {
-        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(testUser);
-        LoginUserDTO wrongPasswordDTO = new LoginUserDTO(TEST_EMAIL, "wrongPassword");
 
-        boolean result = userService.login(wrongPasswordDTO);
-
-        assertFalse(result);
-        verify(userRepository).findByEmail(TEST_EMAIL);
-    }
 }

@@ -20,11 +20,7 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestBody LoginUserDTO loginDTO) {
-        boolean login = userService.login(loginDTO);
-        if (login) {
-            return loginDTO.email();
-        }
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login failed! Incorrect email or password.");
+        return userService.login(loginDTO);
     }
 
     @PostMapping
