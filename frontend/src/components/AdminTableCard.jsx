@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {styled} from '@mui/material/styles';
 import {Box, Button, Typography, Paper} from '@mui/material';
+import CreateTableForm from "./CreateTableForm.jsx";
 
 const StyledTableCard = styled(Paper)(({theme}) => ({
     borderRadius: 8,
@@ -28,7 +29,29 @@ const StyledTableCard = styled(Paper)(({theme}) => ({
     },
 }));
 
-const AdminTableCard = ({table, onEdit, onDelete}) => {
+const AdminTableCard = ({ table, onDelete }) => {
+    const [isEditing, setIsEditing] = useState(false);
+
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);
+    };
+
+    if (isEditing) {
+        return (
+            <CreateTableForm
+                initialData={{
+                    tableNumber: table.tableNumber,
+                    numOfSeats: table.numOfSeats
+                }}
+                onCancel={handleCancelEdit}
+            />
+        );
+    }
+
     return (
         <StyledTableCard className="available" elevation={3}>
             <Box>
@@ -39,30 +62,24 @@ const AdminTableCard = ({table, onEdit, onDelete}) => {
                     Seats: {table.numOfSeats}
                 </Typography>
             </Box>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={() => onEdit(table.tableNumber)}
-                sx={{
-                    mt: 2,
-                    textTransform: 'none',
-                    fontWeight: 500,
-                }}
-            >
-                Edit
-            </Button>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={() => onDelete(table.tableNumber)}
-                sx={{
-                    mt: 2,
-                    textTransform: 'none',
-                    fontWeight: 500,
-                }}
-            >
-                Delete
-            </Button>
+            <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleEditClick}
+                    sx={{ flex: 1 }}
+                >
+                    Edit
+                </Button>
+                <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => onDelete(table.tableNumber)}
+                    sx={{ flex: 1 }}
+                >
+                    Delete
+                </Button>
+            </Box>
         </StyledTableCard>
     );
 };

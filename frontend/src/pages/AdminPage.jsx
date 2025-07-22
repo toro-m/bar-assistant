@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import {fetchTables} from "../utils/utils.js";
 import AdminTableCard from "../components/AdminTableCard.jsx";
 import CreateTableForm from "../components/CreateTableForm.jsx";
+import Loading from "../components/Loading.jsx";
+import Error from "../components/Error.jsx";
 
 
 const AdminPage = () => {
@@ -26,10 +28,6 @@ const AdminPage = () => {
         loadTables();
     }, []);
 
-    function handleEditTable(tableNumber) {
-        // todo implement
-    }
-
     async function handleDeleteTable(tableNumber) {
         try {
             await fetch(`/api/tables/${tableNumber}`, {
@@ -45,11 +43,20 @@ const AdminPage = () => {
         }
     }
 
+
+    if (loading) {
+        return <Loading/>;
+    }
+
+    if (error) {
+        return <Error message={error}/>;
+    }
+
     return (
         <div className="admin">
             <CreateTableForm/>
             {tables.map((table) => (
-                <AdminTableCard key={table.tableNumber} table={table} onEdit={handleEditTable}
+                <AdminTableCard key={table.tableNumber} table={table}
                                 onDelete={handleDeleteTable}/>
             ))}
 

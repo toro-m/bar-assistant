@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Paper } from '@mui/material';
 
-const CreateTableForm = () => {
-    const [formData, setFormData] = useState({
+const CreateTableForm = ({ initialData, onCancel }) => {
+    const [formData, setFormData] = useState(initialData || {
         tableNumber: '',
         numOfSeats: ''
     });
@@ -24,8 +24,14 @@ const CreateTableForm = () => {
         setIsSubmitting(true);
 
         try {
-            const response = await fetch('/api/tables', {
-                method: 'POST',
+            const url = initialData
+                ? `/api/tables/${initialData.tableNumber}`
+                : '/api/tables';
+
+            const method = initialData ? 'PATCH' : 'POST';
+
+            const response = await fetch(url, {
+                method,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -38,27 +44,32 @@ const CreateTableForm = () => {
 
             if (!response.ok) {
                 const errorText = await response.text();
-                throw new Error(errorText || 'Failed to create table');
+                throw new Error(errorText || 'Failed to save table');
             }
 
-            setFormData({
-                tableNumber: '',
-                numOfSeats: ''
-            });
+            if (!initialData) {
+                setFormData({
+                    tableNumber: '',
+                    numOfSeats: ''
+                });
+            }
 
             window.location.reload();
 
         } catch (err) {
-            setError(err.message || 'An error occurred while creating the table');
-            console.error('Error creating table:', err);
+            setError(err.message || 'An error occurred while saving the table');
+            console.error('Error saving table:', err);
         } finally {
             setIsSubmitting(false);
         }
     };
 
+
     return (
         <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
-            <Typography variant="h6" gutterBottom>Create New Table</Typography>
+            <Typography variant="h6" gutterBottom>
+                {initialData ? 'Edit Table' : 'Create New Table'}
+            </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
                     margin="normal"
@@ -89,15 +100,26 @@ const CreateTableForm = () => {
                         {error}
                     </Typography>
                 )}
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    disabled={isSubmitting}
-                >
-                    {isSubmitting ? 'Creating...' : 'Create Table'}
-                </Button>
+                <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
+                    {onCancel && (
+                        <Button
+                            fullWidth
+                            variant="outlined"
+                            onClick={onCancel}
+                            disabled={isSubmitting}
+                        >
+                            Cancel
+                        </Button>
+                    )}
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting ? 'Saving...' : initialData ? 'Save Changes' : 'Create Table'}
+                    </Button>
+                </Box>
             </Box>
         </Paper>
     );
