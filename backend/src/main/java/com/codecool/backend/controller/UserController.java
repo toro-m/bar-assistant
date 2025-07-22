@@ -28,4 +28,9 @@ public class UserController {
     public void addUser(@RequestBody UserDTO userDTO) {
         userService.addUser(userDTO);
     }
+
+    @GetMapping("/{userEmail}")
+    public UserDTO getUser(@PathVariable String userEmail) {
+        return userService.getUserByEmail(userEmail);
+    }
 }

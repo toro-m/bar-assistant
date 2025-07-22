@@ -72,7 +72,8 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.GET,"api/reservations/table/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"api/reservations/user/**").hasRole("USER")
                                 .requestMatchers(HttpMethod.POST,"api/reservations").hasRole("USER")
-                                .requestMatchers("api/users/**").permitAll()
+                                .requestMatchers(HttpMethod.POST,"api/users/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"api/users/**").hasRole("ADMIN")
                                 .requestMatchers("/error").permitAll()
                                 .anyRequest().authenticated()
 

@@ -49,4 +49,11 @@ public class UserService {
          return jwtUtils.generateJwtToken(authentication);
      }
 
+    public UserDTO getUserByEmail(String userEmail) {
+        User user = userRepository.findByEmail(userEmail);
+        if (user == null) {
+            throw new EntityNotFoundException("User not found with email: " + userEmail);
+        }
+        return new UserDTO(user.getFullName(), user.getPassword(), user.getEmail());
+    }
 }
