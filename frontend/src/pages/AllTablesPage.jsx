@@ -12,6 +12,8 @@ import {
 import TableCard from "../components/TableCard.jsx";
 import ReservationConfirmation from "../components/ReservationConfirmation.jsx";
 import ReservationCalendar from "../components/ReservationCalendar.jsx";
+import { jwtDecode } from "jwt-decode";
+
 
 const AllTablesPage = () => {
   const [tables, setTables] = useState([]);
@@ -61,6 +63,20 @@ const AllTablesPage = () => {
     return `${year}-${month}-${day}T${hours}:${minutes}:00`;
   };
 
+
+    function getEmailFromToken() {
+        const token = localStorage.getItem("token");
+        if (!token) return null;
+
+        try {
+            const decoded = jwtDecode(token);
+            return decoded.sub;
+        } catch (error) {
+            console.error("Invalid token:", error);
+            return null;
+        }
+    }
+
   const handleConfirmReservation = async (reservationDateTime) => {
     if (!reservationDateTime) return;
 
@@ -68,16 +84,17 @@ const AllTablesPage = () => {
     try {
       const startTime = new Date(reservationDateTime);
       const endTime = new Date(startTime.getTime() + 60 * 60 * 1000);
+      const token = localStorage.getItem('token');
 
-      const userEmail = localStorage.getItem('email');
 
       const response = await fetch('/api/reservations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
-          userEmail,
+          userEmail: getEmailFromToken(),
           tableNumber: selectedTable,
           reservationStartTime: formatToLocalISO(startTime),
           reservationEndTime: formatToLocalISO(endTime)

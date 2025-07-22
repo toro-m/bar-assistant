@@ -44,8 +44,10 @@ const LoginPage = () => {
                 const errorData = await response.json().catch(() => ({}));
                 throw new Error(errorData.message || "Login failed. Please check your credentials and try again.");
             }
+
+            const token = await response.text();
             
-            localStorage.setItem("email", formData.email);
+            localStorage.setItem("token", token);
             navigate('/tables');
 
         } catch (error) {
