@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {fetchTables} from "../utils/utils.js";
-import {Box, Button, Typography} from "@mui/material";
 import AdminTableCard from "../components/AdminTableCard.jsx";
+import CreateTableForm from "../components/CreateTableForm.jsx";
 
 
 const AdminPage = () => {
@@ -45,12 +45,9 @@ const AdminPage = () => {
         }
     }
 
-    function handleCreateTable() {
-        // todo implement
-    }
-
     return (
         <div className="admin">
+            <CreateTableForm/>
             {tables.map((table) => (
                 <AdminTableCard key={table.tableNumber} table={table} onEdit={handleEditTable}
                                 onDelete={handleDeleteTable}/>
