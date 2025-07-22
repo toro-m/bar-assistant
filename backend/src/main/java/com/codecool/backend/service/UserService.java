@@ -54,6 +54,6 @@ public class UserService {
         if (user == null) {
             throw new EntityNotFoundException("User not found with email: " + userEmail);
         }
-        return new UserDTO(user.getFullName(), user.getPassword(), user.getEmail());
+        return new UserDTO(user.getFullName(), user.getPassword(), user.getEmail(), user.getRole());
     }
 }
