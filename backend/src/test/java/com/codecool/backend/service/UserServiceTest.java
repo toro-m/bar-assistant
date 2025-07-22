@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import com.codecool.backend.model.Role;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -42,7 +43,7 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         testUser = new User(TEST_FULL_NAME, TEST_PASSWORD, TEST_EMAIL);
-        testUserDTO = new UserDTO(TEST_FULL_NAME, TEST_PASSWORD, TEST_EMAIL);
+        testUserDTO = new UserDTO(TEST_FULL_NAME, TEST_PASSWORD, TEST_EMAIL, Role.ROLE_USER);
         testLoginDTO = new LoginUserDTO(TEST_EMAIL, TEST_PASSWORD);
     }
 
