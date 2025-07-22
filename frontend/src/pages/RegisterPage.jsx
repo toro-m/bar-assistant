@@ -72,10 +72,8 @@ const RegisterPage = () => {
             if (!response.ok) {
                 throw new Error('Registration failed');
             }
-            
-            localStorage.setItem('email', formData.email);
-            
-            navigate('/home');
+
+            navigate('/login');
             
         } catch (error) {
             console.error('Registration error:', error);
