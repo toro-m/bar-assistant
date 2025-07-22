@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from "react";
+import {getEmailFromToken} from "../utils/utils.js";
 
 const NavBar = () => {
     const navigate = useNavigate();
@@ -37,18 +37,6 @@ const NavBar = () => {
         localStorage.clear();
         navigate('/login');
     };
-
-    function getEmailFromToken() {
-        if (!token) return null;
-
-        try {
-            const decoded = jwtDecode(token);
-            return decoded.sub;
-        } catch (error) {
-            console.error("Invalid token:", error);
-            return null;
-        }
-    }
 
     return (
         <nav className="nav">

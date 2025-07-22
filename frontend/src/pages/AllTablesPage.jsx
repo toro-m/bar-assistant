@@ -12,7 +12,7 @@ import {
 import TableCard from "../components/TableCard.jsx";
 import ReservationConfirmation from "../components/ReservationConfirmation.jsx";
 import ReservationCalendar from "../components/ReservationCalendar.jsx";
-import { jwtDecode } from "jwt-decode";
+import {fetchTables, getEmailFromToken} from "../utils/utils.js";
 
 
 const AllTablesPage = () => {
@@ -28,24 +28,20 @@ const AllTablesPage = () => {
     useMediaQuery(theme.breakpoints.up('md'));
     useMediaQuery(theme.breakpoints.up('lg'));
 
-    const fetchTables = async () => {
-        try {
-            const response = await fetch('/api/tables');
-            if (!response.ok) {
-                throw new Error('Failed to fetch tables');
-            }
-            const data = await response.json();
-            setTables(data);
-        } catch (err) {
-            setError(err.message);
-            console.error('Error fetching tables:', err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
-        fetchTables();
+        const loadTables = async () => {
+            try {
+                setLoading(true);
+                const data = await fetchTables();
+                setTables(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadTables();
     }, []);
     const handleReserveClick = (tableNumber) => {
     setSelectedTable(tableNumber);
@@ -62,20 +58,6 @@ const AllTablesPage = () => {
     const minutes = pad(date.getMinutes());
     return `${year}-${month}-${day}T${hours}:${minutes}:00`;
   };
-
-
-    function getEmailFromToken() {
-        const token = localStorage.getItem("token");
-        if (!token) return null;
-
-        try {
-            const decoded = jwtDecode(token);
-            return decoded.sub;
-        } catch (error) {
-            console.error("Invalid token:", error);
-            return null;
-        }
-    }
 
   const handleConfirmReservation = async (reservationDateTime) => {
     if (!reservationDateTime) return;
