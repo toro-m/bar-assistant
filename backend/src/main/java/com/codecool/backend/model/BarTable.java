@@ -15,9 +15,13 @@ public class BarTable {
     public BarTable() {
     }
 
-    public BarTable(int tableNumber ,int availableSeats) {
+    public BarTable(int tableNumber, int availableSeats) {
         this.tableNumber = tableNumber;
         this.availableSeats = availableSeats;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public int getTableNumber() {
