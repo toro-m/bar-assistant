@@ -1,13 +1,10 @@
-package com.codecool.backend.controller;
+package com.codecool.backend.controller.user;
 
 import com.codecool.backend.DTO.LoginUserDTO;
 import com.codecool.backend.DTO.UserDTO;
 import com.codecool.backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.SequencedSet;
 
 @RestController
 @RequestMapping("/api/users")

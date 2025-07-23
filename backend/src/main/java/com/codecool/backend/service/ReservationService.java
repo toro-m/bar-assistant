@@ -2,7 +2,6 @@ package com.codecool.backend.service;
 
 import com.codecool.backend.DTO.ReservationDTO;
 import com.codecool.backend.model.Reservation;
-import com.codecool.backend.model.User;
 import com.codecool.backend.repository.BarTableRepository;
 import com.codecool.backend.repository.ReservationRepository;
 import com.codecool.backend.repository.UserRepository;
