@@ -4,9 +4,11 @@ import com.codecool.backend.DTO.TableDTO;
 import com.codecool.backend.exception.DuplicateTableNumberException;
 import com.codecool.backend.model.BarTable;
 import com.codecool.backend.repository.BarTableRepository;
+import com.codecool.backend.repository.ReservationRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,6 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
@@ -28,6 +31,10 @@ class BarTableServiceTest {
 
     @Mock
     private BarTableRepository barTableRepository;
+
+    @Mock
+    private ReservationRepository reservationRepository;
+
     @Test
     void testGetAllTables_whenNoTablesExist_returnEmptyList() {
         List<TableDTO> allTables = barTableService.getAllTables();
@@ -80,8 +87,15 @@ class BarTableServiceTest {
     void testDeleteTable_whenTableExists_deleteTable() {
         BarTable table1 = new BarTable(1, 4);
         when(barTableRepository.findByTableNumber(1)).thenReturn(table1);
+
+        ArgumentCaptor<Long> tableIdCaptor = ArgumentCaptor.forClass(Long.class);
+
         barTableService.deleteTable(1);
+
         verify(barTableRepository, times(1)).delete(table1);
+        verify(reservationRepository, times(1)).deleteReservationsByTableId(tableIdCaptor.capture());
+
+        verify(barTableRepository).delete(same(table1));
     }
 
     @Test

@@ -1,4 +1,4 @@
-package com.codecool.backend.controller;
+package com.codecool.backend.controller.bartable;
 
 import com.codecool.backend.DTO.TableDTO;
 import com.codecool.backend.service.BarTableService;

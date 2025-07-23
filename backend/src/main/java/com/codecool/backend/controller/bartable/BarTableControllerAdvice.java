@@ -1,30 +1,27 @@
-package com.codecool.backend.controller;
+package com.codecool.backend.controller.bartable;
 
-import com.codecool.backend.exception.UserAlreadyExistsException;
+import com.codecool.backend.exception.DuplicateTableNumberException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 @ControllerAdvice
-public class UserControllerAdvice {
+public class BarTableControllerAdvice {
 
     @ResponseBody
-    @ExceptionHandler(UserAlreadyExistsException.class)
+    @ExceptionHandler(DuplicateTableNumberException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public String handleUserAlreadyExistsException(UserAlreadyExistsException exception) {
-        return exception.getMessage();
+    public String duplicateTableNumberExceptionHandler(DuplicateTableNumberException ex) {
+        return ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleEntityNotFoundException(EntityNotFoundException exception) {
-        return exception.getMessage() + " At login.";
+    public String entityNotFoundExceptionHandler(EntityNotFoundException ex) {
+        return ex.getMessage();
     }
-
-
 }

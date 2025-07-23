@@ -32,7 +32,6 @@ public class Reservation {
         return user.getEmail();
     }
 
-
     public int getTableNumber() {
         return table.getTableNumber();
     }

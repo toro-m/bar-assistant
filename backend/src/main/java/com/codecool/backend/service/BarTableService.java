@@ -17,7 +17,7 @@ public class BarTableService {
     private final BarTableRepository barTableRepository;
     private final ReservationRepository reservationRepository;
 
-    public BarTableService(BarTableRepository barTableRepository, ReservationService reservationService, ReservationRepository reservationRepository) {
+    public BarTableService(BarTableRepository barTableRepository, ReservationRepository reservationRepository) {
         this.barTableRepository = barTableRepository;
         this.reservationRepository = reservationRepository;
     }
