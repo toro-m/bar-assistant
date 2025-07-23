@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import com.codecool.backend.model.Role;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -119,6 +120,21 @@ class UserServiceTest {
         verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
         verify(jwtUtils).generateJwtToken(authentication);
         verify(securityContext).setAuthentication(authentication);
+    }
+
+    @Test
+    void testLogin_WhenAuthenticationFails_ThrowsException() {
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenThrow(new BadCredentialsException("Invalid credentials"));
+
+        assertThrows(BadCredentialsException.class,
+                () -> userService.login(testLoginDTO),
+                "Expected login to throw BadCredentialsException for invalid credentials"
+        );
+
+        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
+        verifyNoInteractions(jwtUtils);
+        verify(securityContext, never()).setAuthentication(any());
     }
 
 
