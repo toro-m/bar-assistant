@@ -58,7 +58,6 @@ class UserServiceTest {
     private final String TEST_PASSWORD = "password123";
     private final String TEST_PASSWORD_ENCODED = "encodedPassword123";
     private final String TEST_FULL_NAME = "Test User";
-    private final String TEST_TOKEN = "test.jwt.token";
 
     private User testUser;
     private UserDTO testUserDTO;
@@ -111,6 +110,7 @@ class UserServiceTest {
     void testLogin_WhenUserExists_ReturnsToken() {
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(authentication);
+        String TEST_TOKEN = "test.jwt.token";
         when(jwtUtils.generateJwtToken(authentication)).thenReturn(TEST_TOKEN);
 
         String result = userService.login(testLoginDTO);
@@ -137,8 +137,33 @@ class UserServiceTest {
         verify(securityContext, never()).setAuthentication(any());
     }
 
+    @Test
+    void testGetUserByEmail_WhenUserExists_ReturnsUserDTO() {
+        testUser.setPassword(TEST_PASSWORD_ENCODED);
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(testUser);
 
+        UserDTO result = userService.getUserByEmail(TEST_EMAIL);
 
+        assertAll(
+                () -> assertEquals(TEST_EMAIL, result.email()),
+                () -> assertEquals(TEST_PASSWORD_ENCODED, result.password()),
+                () -> assertEquals(TEST_FULL_NAME, result.fullName()),
+                () -> assertEquals(Role.ROLE_USER, result.role())
+        );
 
+        verify(userRepository).findByEmail(TEST_EMAIL);
+    }
+
+    @Test
+    void testGetUserByEmail_WhenUserDoesNotExist_ThrowsException() {
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(null);
+
+        assertThrows(EntityNotFoundException.class,
+                () -> userService.getUserByEmail(TEST_EMAIL),
+                "Expected getUserByEmail to throw EntityNotFoundException for non-existent email"
+        );
+
+        verify(userRepository).findByEmail(TEST_EMAIL);
+    }
 
 }
