@@ -3,9 +3,6 @@ import {
     Box,
     Container,
     Typography,
-    CircularProgress,
-    Alert,
-    AlertTitle,
     useMediaQuery,
     useTheme
 } from '@mui/material';
@@ -24,7 +21,7 @@ const AllTablesPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedTable, setSelectedTable] = useState(null);
     const [isProcessing, setIsProcessing] = useState(false);
-    const [reservationDateTime, setReservationDateTime] = useState(null);
+    const [_reservationDateTime, setReservationDateTime] = useState(null);
 
     const theme = useTheme();
     useMediaQuery(theme.breakpoints.up('md'));
@@ -43,7 +40,7 @@ const AllTablesPage = () => {
             }
         };
 
-        loadTables();
+        loadTables().catch(console.error);
     }, []);
     const handleReserveClick = (tableNumber) => {
         setSelectedTable(tableNumber);
