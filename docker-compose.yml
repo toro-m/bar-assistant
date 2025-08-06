@@ -37,5 +37,24 @@ services:
       - JWT_EXPIRATION_MS=${JWT_EXPIRATION_MS}
     restart: unless-stopped
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    working_dir: /app
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+
+
 volumes:
   postgres_data:
