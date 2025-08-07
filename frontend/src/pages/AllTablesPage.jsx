@@ -1,18 +1,19 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import {
     Box,
     Container,
     Typography,
     useMediaQuery,
-    useTheme
+    ThemeProvider,
+    CssBaseline
 } from '@mui/material';
 import TableCard from "../components/TableCard.jsx";
 import ReservationConfirmation from "../components/ReservationConfirmation.jsx";
 import ReservationCalendar from "../components/ReservationCalendar.jsx";
-import {fetchTables, getEmailFromToken} from "../utils/utils.js";
+import { fetchTables, getEmailFromToken } from "../utils/utils.js";
 import Loading from "../components/Loading.jsx";
 import Error from "../components/Error.jsx";
-
+import theme from '../utils/theme';
 
 const AllTablesPage = () => {
     const [tables, setTables] = useState([]);
@@ -23,7 +24,6 @@ const AllTablesPage = () => {
     const [isProcessing, setIsProcessing] = useState(false);
     const [_reservationDateTime, setReservationDateTime] = useState(null);
 
-    const theme = useTheme();
     useMediaQuery(theme.breakpoints.up('md'));
     useMediaQuery(theme.breakpoints.up('lg'));
 
@@ -42,6 +42,7 @@ const AllTablesPage = () => {
 
         loadTables().catch(console.error);
     }, []);
+
     const handleReserveClick = (tableNumber) => {
         setSelectedTable(tableNumber);
         setReservationDateTime(null);
@@ -67,7 +68,6 @@ const AllTablesPage = () => {
             const endTime = new Date(startTime.getTime() + 60 * 60 * 1000);
             const token = localStorage.getItem('token');
 
-
             const response = await fetch('/api/reservations', {
                 method: 'POST',
                 headers: {
@@ -87,9 +87,7 @@ const AllTablesPage = () => {
                 throw new Error(errorData.message || 'Failed to create reservation');
             }
 
-
             await fetchTables();
-
         } catch (err) {
             console.error('Error creating reservation:', err);
             setError(err.message || 'Failed to create reservation');
@@ -117,64 +115,83 @@ const AllTablesPage = () => {
         return <Loading/>;
     }
 
-
     if (error) {
         return <Error message={error}/>;
     }
 
     return (
-        <Container maxWidth="lg" sx={{py: 4}}>
-            <Typography
-                variant="h3"
-                component="h1"
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Container
+                maxWidth="lg"
                 sx={{
-                    fontSize: '1.875rem',
-                    fontWeight: 700,
-                    color: '#1f2937',
-                    mb: 3,
-                    textAlign: 'center',
+                    py: 4,
+                    minHeight: '100vh',
+                    background: 'linear-gradient(135deg, #EFEBE9 0%, #D7CCC8 100%)',
                 }}
             >
-                All Tables
-            </Typography>
+                <Typography
+                    variant="h3"
+                    component="h1"
+                    sx={{
+                        fontSize: '2rem',
+                        fontWeight: 600,
+                        color: 'primary.dark',
+                        mb: 4,
+                        textAlign: 'center',
+                        fontFamily: '"Playfair Display", serif',
+                        position: 'relative',
+                        '&:after': {
+                            content: '""',
+                            display: 'block',
+                            width: '100px',
+                            height: '3px',
+                            background: 'linear-gradient(90deg, #5D4037, #8D6E63, #5D4037)',
+                            margin: '16px auto 0',
+                        },
+                    }}
+                >
+                    All Tables
+                </Typography>
 
-            <Box
-                sx={{
-                    display: 'grid',
-                    gridTemplateColumns: {
-                        xs: '1fr',
-                        sm: '1fr',
-                        md: 'repeat(2, 1fr)',
-                        lg: 'repeat(3, 1fr)',
-                    },
-                    gap: 2,
-                    width: '100%',
-                }}
-            >
-                {tables.map((table) => (
-                    <TableCard
-                        key={table.tableNumber}
-                        table={table}
-                        onReserve={() => handleReserveClick(table.tableNumber)}
-                    />
-                ))}
-            </Box>
+                <Box
+                    sx={{
+                        display: 'grid',
+                        gridTemplateColumns: {
+                            xs: '1fr',
+                            sm: '1fr',
+                            md: 'repeat(2, 1fr)',
+                            lg: 'repeat(3, 1fr)',
+                        },
+                        gap: 3,
+                        width: '100%',
+                    }}
+                >
+                    {tables.map((table) => (
+                        <TableCard
+                            key={table.tableNumber}
+                            table={table}
+                            onReserve={() => handleReserveClick(table.tableNumber)}
+                        />
+                    ))}
+                </Box>
 
-            <ReservationConfirmation
-                key={`${isModalOpen}-${selectedTable}`}
-                isOpen={isModalOpen}
-                tableNumber={selectedTable}
-                onConfirm={handleConfirmReservation}
-                onCancel={handleCancelReservation}
-                isProcessing={isProcessing}
-            >
-                <ReservationCalendar
+                <ReservationConfirmation
+                    key={`${isModalOpen}-${selectedTable}`}
+                    isOpen={isModalOpen}
                     tableNumber={selectedTable}
-                    onTimeSelect={handleDateTimeChange}
-                    key={`calendar-${isModalOpen}-${selectedTable}`}
-                />
-            </ReservationConfirmation>
-        </Container>
+                    onConfirm={handleConfirmReservation}
+                    onCancel={handleCancelReservation}
+                    isProcessing={isProcessing}
+                >
+                    <ReservationCalendar
+                        tableNumber={selectedTable}
+                        onTimeSelect={handleDateTimeChange}
+                        key={`calendar-${isModalOpen}-${selectedTable}`}
+                    />
+                </ReservationConfirmation>
+            </Container>
+        </ThemeProvider>
     );
 };
 
