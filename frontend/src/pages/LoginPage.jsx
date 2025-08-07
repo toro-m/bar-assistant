@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-    Container,
-    TextField,
     Button,
+    TextField,
+    Container,
     Typography,
     Box,
     Paper,
-    CssBaseline
+    ThemeProvider,
+    CssBaseline, Link
 } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import LoginError from "../components/LoginError.jsx";
-
-const theme = createTheme();
+import { ArrowBack } from '@mui/icons-material';
+import theme from '../utils/theme';
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
@@ -46,7 +45,6 @@ const LoginPage = () => {
             }
 
             const token = await response.text();
-            
             localStorage.setItem("token", token);
             navigate('/tables');
 
@@ -58,73 +56,168 @@ const LoginPage = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <Box
+            <CssBaseline />
+            <Container
+                component="main"
+                maxWidth="xs"
+                sx={{
+                    minHeight: '100vh',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    py: 4,
+                    background: 'linear-gradient(135deg, #EFEBE9 0%, #D7CCC8 100%)',
+                }}
+            >
+                <Button
+                    startIcon={<ArrowBack />}
+                    onClick={() => navigate('/tables')}
                     sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
+                        alignSelf: 'flex-start',
+                        mb: 2,
+                        color: 'primary.dark',
+                        '&:hover': {
+                            backgroundColor: 'rgba(93, 64, 55, 0.1)',
+                        },
                     }}
                 >
-                    <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
-                        <Typography component="h1" variant="h5" align="center" mb={3}>
-                            Sign in
+                    Back to tables page
+                </Button>
+
+                <Paper
+                    elevation={3}
+                    sx={{
+                        p: 4,
+                        width: '100%',
+                        background: 'rgba(255, 255, 255, 0.7)',
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid rgba(93, 64, 55, 0.2)',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        '&:before': {
+                            content: '""',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            height: '4px',
+                            background: 'linear-gradient(90deg, #5D4037, #8D6E63, #5D4037)',
+                        },
+                    }}
+                >
+                    <Typography
+                        component="h1"
+                        variant="h5"
+                        align="center"
+                        sx={{
+                            mb: 3,
+                            color: 'primary.dark',
+                            position: 'relative',
+                            '&:after': {
+                                content: '""',
+                                display: 'block',
+                                width: '60px',
+                                height: '2px',
+                                background: '#8D6E63',
+                                margin: '12px auto 0',
+                            },
+                        }}
+                    >
+                        Welcome Back
+                    </Typography>
+
+                    {error && (
+                        <Typography
+                            color="error"
+                            align="center"
+                            sx={{
+                                mb: 2,
+                                p: 1,
+                                backgroundColor: 'rgba(211, 47, 47, 0.1)',
+                                borderRadius: 1,
+                            }}
+                        >
+                            {error}
                         </Typography>
+                    )}
 
-                        <LoginError
-                            error={error}
-                            onClose={() => setError('')}
+                    <Box component="form" onSubmit={handleSubmit} noValidate>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                            value={formData.email}
+                            onChange={handleChange}
+                            error={!!error}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                },
+                            }}
                         />
-
-                        <Box component="form" onSubmit={handleSubmit} noValidate>
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                autoFocus
-                                value={formData.email}
-                                onChange={handleChange}
-                                error={!!error}
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                error={!!error}
-                            />
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            error={!!error}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                },
+                            }}
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{
+                                mt: 4,
+                                mb: 2,
+                                py: 1.5,
+                                fontSize: '1.1rem',
+                                backgroundColor: 'primary.main',
+                                '&:hover': {
+                                    backgroundColor: 'primary.dark',
+                                },
+                            }}
+                        >
+                            Sign In
+                        </Button>
+                        <Box sx={{
+                            textAlign: 'center',
+                            mt: 2,
+                            color: 'text.secondary',
+                            fontSize: '0.9rem',
+                        }}>
+                            Don't have an account?{' '}
+                            <Link
+                                href="/register"
+                                sx={{
+                                    color: 'primary.dark',
+                                    textDecoration: 'none',
+                                    fontWeight: 500,
+                                    '&:hover': {
+                                        textDecoration: 'underline',
+                                    },
+                                }}
                             >
-                                Sign In
-                            </Button>
-                            <Button
-                                type="button"
-                                fullWidth
-                                variant="outlined"
-                                onClick={() => navigate('/register')}
-                                sx={{ mt: 1, mb: 2 }}
-                            >
-                                Don't have an account? Register
-                            </Button>
+                                Register
+                            </Link>
                         </Box>
-                    </Paper>
-                </Box>
+                    </Box>
+                </Paper>
             </Container>
         </ThemeProvider>
     );
