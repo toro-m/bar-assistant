@@ -77,7 +77,6 @@ const NavBar = () => {
                             Bar Assistant
                         </Typography>
                     </Box>
-
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <Button
                             component={RouterLink}
@@ -109,19 +108,36 @@ const NavBar = () => {
                             </Button>
                         )}
 
-                        <Button
-                            onClick={handleLogout}
-                            sx={{
-                                color: 'white',
-                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                                textTransform: 'none',
-                                '&:hover': {
-                                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                                },
-                            }}
-                        >
-                            Logout
-                        </Button>
+                        {token ? (
+                            <Button
+                                onClick={handleLogout}
+                                sx={{
+                                    color: 'white',
+                                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                    textTransform: 'none',
+                                    '&:hover': {
+                                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                    },
+                                }}
+                            >
+                                Logout
+                            </Button>
+                        ) : (
+                            <Button
+                                component={RouterLink}
+                                to="/login"
+                                sx={{
+                                    color: 'white',
+                                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                    textTransform: 'none',
+                                    '&:hover': {
+                                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                    },
+                                }}
+                            >
+                                Sign In
+                            </Button>
+                        )}
                     </Box>
                 </Toolbar>
             </Container>
