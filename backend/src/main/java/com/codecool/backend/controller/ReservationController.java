@@ -25,13 +25,11 @@ public class ReservationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('USER')")
     public void createReservation(@RequestBody ReservationDTO reservationDTO) {
         reservationService.addReservation(reservationDTO.userEmail() ,reservationDTO.tableNumber(), reservationDTO.reservationStartTime(), reservationDTO.reservationEndTime());
     }
 
     @GetMapping("/user/{userId}")
-    @PreAuthorize("hasRole('USER')")
     public List<ReservationDTO> findReservationsByUser(@PathVariable Long userId) {
         return reservationService.getAllReservationsByUser(userId);
     }
