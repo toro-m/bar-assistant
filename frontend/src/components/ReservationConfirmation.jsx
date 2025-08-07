@@ -10,87 +10,20 @@ import {
   Stepper,
   Step,
   StepLabel,
-  styled,
-  keyframes
+  useTheme
 } from '@mui/material';
 import ReservationCalendar from './ReservationCalendar';
 
-const spin = keyframes`
-  to { transform: rotate(360deg); }
-`;
-
-const StyledDialog = styled(Dialog)(() => ({
-  '& .MuiDialog-paper': {
-    width: '100%',
-    maxWidth: '28rem',
-    borderRadius: '0.5rem',
-    boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
-    transform: 'translateY(10px)',
-    transition: 'transform 0.3s ease',
-    '&.MuiDialog-paperActive': {
-      transform: 'translateY(0)',
-    },
-  },
-}));
-
-const StyledDialogTitle = styled(DialogTitle)({
-  paddingBottom: '0.5rem',
-});
-
-const StyledDialogContent = styled(DialogContent)({
-  padding: '1.5rem',
-  '&.MuiDialogContent-root': {
-    padding: '1.5rem',
-  },
-});
-
-const StyledDialogActions = styled(DialogActions)({
-  padding: '0 1.5rem 1.5rem',
-  justifyContent: 'flex-end',
-  gap: '0.75rem',
-});
-
-const StyledButton = styled(Button)({
-  padding: '0.5rem 1rem',
-  borderRadius: '0.375rem',
-  fontWeight: 500,
-  textTransform: 'none',
-  '&.MuiButton-contained': {
-    backgroundColor: '#3b82f6',
-    '&:hover': {
-      backgroundColor: '#2563eb',
-    },
-  },
-  '&.MuiButton-outlined': {
-    backgroundColor: '#f3f4f6',
-    color: '#4b5563',
-    borderColor: '#e5e7eb',
-    '&:hover': {
-      backgroundColor: '#e5e7eb',
-    },
-  },
-});
-
-const LoadingSpinner = styled('span')({
-  display: 'inline-block',
-  width: '1rem',
-  height: '1rem',
-  border: '2px solid rgba(255, 255, 255, 0.3)',
-  borderRadius: '50%',
-  borderTopColor: 'white',
-  animation: `${spin} 1s ease-in-out infinite`,
-  marginRight: '0.5rem',
-});
-
 const ReservationConfirmation = ({
-  isOpen,
-  tableNumber,
-  onConfirm,
-  onCancel,
-  isProcessing = false,
-}) => {
+                                   isOpen,
+                                   tableNumber,
+                                   onConfirm,
+                                   onCancel,
+                                   isProcessing = false,
+                                 }) => {
   const [selectedDateTime, setSelectedDateTime] = useState(null);
   const [activeStep, setActiveStep] = useState(0);
+  const theme = useTheme();
 
   const handleTimeSelect = (dateTime) => {
     setSelectedDateTime(dateTime);
@@ -108,90 +41,177 @@ const ReservationConfirmation = ({
   const handleConfirm = () => {
     if (selectedDateTime) {
       onConfirm(selectedDateTime);
-    } else {
-      console.error('No date/time selected');
     }
   };
 
   const steps = ['Select Date & Time', 'Confirm Reservation'];
 
   return (
-    <StyledDialog
-      open={isOpen}
-      onClose={!isProcessing ? onCancel : undefined}
-      maxWidth="md"
-      fullWidth
-      disableEscapeKeyDown={isProcessing}
-      PaperProps={{
-        className: isOpen ? 'MuiDialog-paperActive' : '',
-      }}
-    >
-      <StyledDialogTitle>
-        <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 2 }}>
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-      </StyledDialogTitle>
-      
-      <StyledDialogContent>
-        {activeStep === 0 ? (
-          <ReservationCalendar
-            tableNumber={tableNumber}
-            onTimeSelect={handleTimeSelect}
-            onCancel={onCancel}
-          />
-        ) : (
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" gutterBottom sx={{ 
-              fontSize: '1.25rem',
-              fontWeight: 600,
-              color: '#1f2937',
-              mb: 2
-            }}>
-              Confirm Your Reservation
-            </Typography>
-            <Typography variant="body1" sx={{ color: '#4b5563', mb: 2 }}>
-              Table: {tableNumber}
-            </Typography>
-            <Typography variant="body1" sx={{ color: '#4b5563', mb: 2 }}>
-              Date: {selectedDateTime?.toLocaleDateString()}
-            </Typography>
-            <Typography variant="body1" sx={{ color: '#4b5563', mb: 2 }}>
-              Time: {selectedDateTime?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            </Typography>
-          </Box>
-        )}
-      </StyledDialogContent>
-
-      <StyledDialogActions>
-        <StyledButton
-          variant="outlined"
-          onClick={handleBack}
-          disabled={isProcessing}
-        >
-          {activeStep === 0 ? 'Cancel' : 'Back'}
-        </StyledButton>
-        {activeStep === 1 && (
-          <StyledButton
-            variant="contained"
-            onClick={handleConfirm}
-            disabled={isProcessing || !selectedDateTime}
+      <Dialog
+          open={isOpen}
+          onClose={!isProcessing ? onCancel : undefined}
+          maxWidth="md"
+          fullWidth
+          disableEscapeKeyDown={isProcessing}
+          PaperProps={{
+            sx: {
+              borderRadius: 0,
+              background: 'rgba(255, 255, 255, 0.9)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(93, 64, 55, 0.2)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+              '& .MuiStepIcon-root.Mui-active': {
+                color: theme.palette.primary.main,
+              },
+              '& .MuiStepIcon-root.Mui-completed': {
+                color: theme.palette.primary.light,
+              },
+            }
+          }}
+      >
+        <DialogTitle sx={{
+          textAlign: 'center',
+          pb: 1,
+          borderBottom: '1px solid rgba(93, 64, 55, 0.1)',
+          backgroundColor: 'rgba(255, 255, 255, 0.7)',
+        }}>
+          <Stepper
+              activeStep={activeStep}
+              alternativeLabel
+              sx={{
+                '& .MuiStepLabel-label': {
+                  color: theme.palette.text.secondary,
+                  '&.Mui-active, &.Mui-completed': {
+                    color: theme.palette.primary.dark,
+                  }
+                }
+              }}
           >
-            {isProcessing ? (
-              <>
-                <LoadingSpinner />
-                Processing...
-              </>
-            ) : (
-              'Confirm Reservation'
-            )}
-          </StyledButton>
-        )}
-      </StyledDialogActions>
-    </StyledDialog>
+            {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+            ))}
+          </Stepper>
+        </DialogTitle>
+
+        <DialogContent sx={{
+          py: 3,
+          backgroundColor: 'rgba(255, 255, 255, 0.7)',
+        }}>
+          {activeStep === 0 ? (
+              <ReservationCalendar
+                  tableNumber={tableNumber}
+                  onTimeSelect={handleTimeSelect}
+                  onCancel={onCancel}
+              />
+          ) : (
+              <Box sx={{ textAlign: 'center', p: 2 }}>
+                <Typography
+                    variant="h5"
+                    sx={{
+                      color: 'primary.dark',
+                      fontFamily: '"Playfair Display", serif',
+                      mb: 3,
+                      position: 'relative',
+                      '&:after': {
+                        content: '""',
+                        display: 'block',
+                        width: '60px',
+                        height: '2px',
+                        background: theme.palette.primary.main,
+                        margin: '12px auto 0',
+                      }
+                    }}
+                >
+                  Confirm Your Reservation
+                </Typography>
+                <Box sx={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                  p: 3,
+                  borderRadius: 1,
+                  border: '1px solid rgba(93, 64, 55, 0.1)',
+                  mb: 3
+                }}>
+                  <Typography variant="body1" sx={{
+                    color: 'text.primary',
+                    mb: 2,
+                    fontSize: '1.1rem',
+                    '& strong': {
+                      color: 'primary.dark',
+                      mr: 1
+                    }
+                  }}>
+                    <strong>Table:</strong> {tableNumber}
+                  </Typography>
+                  <Typography variant="body1" sx={{
+                    color: 'text.primary',
+                    mb: 2,
+                    fontSize: '1.1rem',
+                    '& strong': {
+                      color: 'primary.dark',
+                      mr: 1
+                    }
+                  }}>
+                    <strong>Date:</strong> {selectedDateTime?.toLocaleDateString()}
+                  </Typography>
+                  <Typography variant="body1" sx={{
+                    color: 'text.primary',
+                    fontSize: '1.1rem',
+                    '& strong': {
+                      color: 'primary.dark',
+                      mr: 1
+                    }
+                  }}>
+                    <strong>Time:</strong> {selectedDateTime?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </Typography>
+                </Box>
+              </Box>
+          )}
+        </DialogContent>
+
+        <DialogActions sx={{
+          p: 2,
+          backgroundColor: 'rgba(255, 255, 255, 0.7)',
+          borderTop: '1px solid rgba(93, 64, 55, 0.1)',
+        }}>
+          <Button
+              variant="outlined"
+              onClick={handleBack}
+              disabled={isProcessing}
+              sx={{
+                color: 'primary.dark',
+                borderColor: 'primary.dark',
+                '&:hover': {
+                  backgroundColor: 'rgba(93, 64, 55, 0.05)',
+                  borderColor: 'primary.dark',
+                }
+              }}
+          >
+            {activeStep === 0 ? 'Cancel' : 'Back'}
+          </Button>
+          {activeStep === 1 && (
+              <Button
+                  variant="contained"
+                  onClick={handleConfirm}
+                  disabled={isProcessing || !selectedDateTime}
+                  sx={{
+                    backgroundColor: 'primary.main',
+                    color: 'white',
+                    '&:hover': {
+                      backgroundColor: 'primary.dark',
+                    },
+                    '&.Mui-disabled': {
+                      backgroundColor: 'rgba(93, 64, 55, 0.5)',
+                      color: 'rgba(255, 255, 255, 0.7)'
+                    }
+                  }}
+              >
+                {isProcessing ? 'Processing...' : 'Confirm Reservation'}
+              </Button>
+          )}
+        </DialogActions>
+      </Dialog>
   );
 };
 

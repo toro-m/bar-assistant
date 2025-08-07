@@ -151,7 +151,7 @@ const AllTablesPage = () => {
                         },
                     }}
                 >
-                    All Tables
+                    Available Tables
                 </Typography>
 
                 <Box
