@@ -21,7 +21,7 @@ public class User {
         this.fullName = fullName;
         this.password = password;
         this.email = email;
-        role = Role.ROLE_USER;
+        role = Role.ROLE_ADMIN;
     }
 
     public Role getRole() {

@@ -13,10 +13,9 @@ export function getEmailFromToken() {
     }
 }
 export async function fetchTables() {
-    const response = await fetch('/api/tables');
+    const response = await fetch(`/api/tables`);
     if (!response.ok) {
         throw new Error('Failed to fetch tables');
     }
     return await response.json();
 }
-
