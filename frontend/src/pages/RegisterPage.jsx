@@ -1,7 +1,78 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, TextField, Container, Typography, Box, Paper, Link } from '@mui/material';
+import { 
+    Button, 
+    TextField, 
+    Container, 
+    Typography, 
+    Box, 
+    Paper, 
+    Link, 
+    createTheme, 
+    ThemeProvider,
+    CssBaseline
+} from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#5D4037',
+            light: '#8D6E63',
+            dark: '#3E2723',
+            contrastText: '#FFF8E1',
+        },
+        secondary: {
+            main: '#BCAAA4',
+            contrastText: '#3E2723',
+        },
+        background: {
+            default: '#EFEBE9',
+            paper: '#D7CCC8',
+        },
+        text: {
+            primary: '#3E2723',  
+            secondary: '#5D4037',
+        },
+    },
+    typography: {
+        fontFamily: '"Playfair Display", serif',
+        h5: {
+            fontWeight: 600,
+            letterSpacing: '1px',
+        },
+    },
+    components: {
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    borderRadius: 0,
+                    textTransform: 'none',
+                    fontWeight: 500,
+                    letterSpacing: '0.5px',
+                    boxShadow: 'none',
+                    '&:hover': {
+                        boxShadow: '2px 2px 4px rgba(0,0,0,0.2)',
+                    },
+                },
+            },
+        },
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                            borderColor: '#8D6E63',
+                        },
+                        '&:hover fieldset': {
+                            borderColor: '#5D4037',
+                        },
+                    },
+                },
+            },
+        },
+    },
+});
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -84,35 +155,93 @@ const RegisterPage = () => {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
-            <Box
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Container 
+                component="main" 
+                maxWidth="xs"
                 sx={{
-                    marginTop: 8,
+                    minHeight: '100vh',
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center',
+                    justifyContent: 'center',
+                    py: 4,
+                    background: 'linear-gradient(135deg, #EFEBE9 0%, #D7CCC8 100%)',
                 }}
             >
                 <Button
                     startIcon={<ArrowBack />}
                     onClick={() => navigate('/login')}
-                    sx={{ alignSelf: 'flex-start', mb: 2 }}
+                    sx={{ 
+                        alignSelf: 'flex-start', 
+                        mb: 2,
+                        color: 'primary.dark',
+                        '&:hover': {
+                            backgroundColor: 'rgba(93, 64, 55, 0.1)',
+                        },
+                    }}
                 >
                     Back to Login
                 </Button>
                 
-                <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
-                    <Typography component="h1" variant="h5" align="center" gutterBottom>
+                <Paper 
+                    elevation={3} 
+                    sx={{ 
+                        p: 4, 
+                        width: '100%',
+                        background: 'rgba(255, 255, 255, 0.7)',
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid rgba(93, 64, 55, 0.2)',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        '&:before': {
+                            content: '""',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            height: '4px',
+                            background: 'linear-gradient(90deg, #5D4037, #8D6E63, #5D4037)',
+                        },
+                    }}
+                >
+                    <Typography 
+                        component="h1" 
+                        variant="h5" 
+                        align="center" 
+                        sx={{ 
+                            mb: 3,
+                            color: 'primary.dark',
+                            position: 'relative',
+                            '&:after': {
+                                content: '""',
+                                display: 'block',
+                                width: '60px',
+                                height: '2px',
+                                background: '#8D6E63',
+                                margin: '12px auto 0',
+                            },
+                        }}
+                    >
                         Create an Account
                     </Typography>
                     
                     {errors.submit && (
-                        <Typography color="error" align="center" sx={{ mb: 2 }}>
+                        <Typography 
+                            color="error" 
+                            align="center" 
+                            sx={{ 
+                                mb: 2,
+                                p: 1,
+                                backgroundColor: 'rgba(211, 47, 47, 0.1)',
+                                borderRadius: 1,
+                            }}
+                        >
                             {errors.submit}
                         </Typography>
                     )}
                     
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate>
                         <TextField
                             margin="normal"
                             required
@@ -126,6 +255,11 @@ const RegisterPage = () => {
                             onChange={handleChange}
                             error={!!errors.fullName}
                             helperText={errors.fullName}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                },
+                            }}
                         />
                         
                         <TextField
@@ -140,6 +274,11 @@ const RegisterPage = () => {
                             onChange={handleChange}
                             error={!!errors.email}
                             helperText={errors.email}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                },
+                            }}
                         />
                         
                         <TextField
@@ -155,26 +294,56 @@ const RegisterPage = () => {
                             onChange={handleChange}
                             error={!!errors.password}
                             helperText={errors.password}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                },
+                            }}
                         />
                         
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            sx={{ 
+                                mt: 4, 
+                                mb: 2,
+                                py: 1.5,
+                                fontSize: '1.1rem',
+                                backgroundColor: 'primary.main',
+                                '&:hover': {
+                                    backgroundColor: 'primary.dark',
+                                },
+                            }}
                         >
                             Register
                         </Button>
                         
-                        <Box sx={{ textAlign: 'center', mt: 2 }}>
-                            <Link href="/login" variant="body2">
-                                Already have an account? Sign in
+                        <Box sx={{ 
+                            textAlign: 'center', 
+                            mt: 2,
+                            color: 'text.secondary',
+                            fontSize: '0.9rem',
+                        }}>
+                            Already have an account?{' '}
+                            <Link 
+                                href="/login" 
+                                sx={{ 
+                                    color: 'primary.dark',
+                                    textDecoration: 'none',
+                                    fontWeight: 500,
+                                    '&:hover': {
+                                        textDecoration: 'underline',
+                                    },
+                                }}
+                            >
+                                Sign in
                             </Link>
                         </Box>
                     </Box>
                 </Paper>
-            </Box>
-        </Container>
+            </Container>
+        </ThemeProvider>
     );
 };
 
