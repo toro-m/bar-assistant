@@ -59,6 +59,28 @@ const theme = createTheme({
             },
         },
     },
+    MuiCard: {
+        styleOverrides: {
+            root: {
+                borderRadius: 0,
+                border: '1px solid',
+                borderColor: 'rgba(93, 64, 55, 0.2)',
+                backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                backdropFilter: 'blur(5px)',
+                '&:hover': {
+                    boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                }
+            }
+        }
+    },
+    MuiPaper: {
+        styleOverrides: {
+            root: {
+                background: 'rgba(255, 255, 255, 0.7)',
+                backdropFilter: 'blur(10px)'
+            }
+        }
+    }
 });
 
 export default theme;
