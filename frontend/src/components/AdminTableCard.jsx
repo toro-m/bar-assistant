@@ -1,44 +1,11 @@
-import React, {useState} from 'react';
-import {styled} from '@mui/material/styles';
-import {Box, Button, Typography, Paper} from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Button, Typography, Paper } from '@mui/material';
 import CreateTableForm from "./CreateTableForm.jsx";
-
-const StyledTableCard = styled(Paper)(({theme}) => ({
-    borderRadius: 8,
-    padding: theme.spacing(3),
-    textAlign: 'center',
-    boxShadow: theme.shadows[1],
-    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-    border: '2px solid',
-    borderColor: theme.palette.primary.main,
-    backgroundColor: theme.palette.common.white,
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    '&:hover': {
-        transform: 'translateY(-4px)',
-        boxShadow: theme.shadows[3],
-    },
-    '&.available': {
-        borderColor: theme.palette.primary.main,
-    },
-    '&.reserved': {
-        borderColor: theme.palette.error.main,
-        opacity: 0.9,
-    },
-}));
 
 const AdminTableCard = ({ table, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
-
-    const handleEditClick = () => {
-        setIsEditing(true);
-    };
-
-    const handleCancelEdit = () => {
-        setIsEditing(false);
-    };
+    const handleEditClick = () => setIsEditing(true);
+    const handleCancelEdit = () => setIsEditing(false);
 
     if (isEditing) {
         return (
@@ -53,34 +20,91 @@ const AdminTableCard = ({ table, onDelete }) => {
     }
 
     return (
-        <StyledTableCard className="available" elevation={3}>
-            <Box>
-                <Typography variant="h6" component="h3" gutterBottom>
+        <Paper
+            elevation={0}
+            sx={{
+                p: 3,
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                background: 'rgba(255, 248, 240, 0.9)',
+                backdropFilter: 'blur(5px)',
+                borderRadius: 1,
+                border: '1px solid rgba(93, 64, 55, 0.3)',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: '0 6px 16px rgba(0,0,0,0.15)'
+                }
+            }}
+        >
+            <Box sx={{ flexGrow: 1 }}>
+                <Typography
+                    variant="h5"
+                    component="h3"
+                    sx={{
+                        color: 'primary.dark',
+                        fontFamily: 'inherit',
+                        fontWeight: 600,
+                        mb: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1
+                    }}
+                >
                     Table {table.tableNumber}
                 </Typography>
-                <Typography variant="body1" color="text.secondary" gutterBottom>
+                <Typography
+                    variant="body1"
+                    sx={{
+                        color: 'text.secondary',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        mb: 3
+                    }}
+                >
                     Seats: {table.numOfSeats}
                 </Typography>
             </Box>
-            <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+
+            <Box sx={{
+                display: 'flex',
+                gap: 2,
+                '& > *': {
+                    flex: 1
+                }
+            }}>
                 <Button
-                    variant="contained"
-                    color="primary"
+                    variant="outlined"
                     onClick={handleEditClick}
-                    sx={{ flex: 1 }}
+                    sx={{
+                        color: 'primary.dark',
+                        borderColor: 'primary.dark',
+                        '&:hover': {
+                            backgroundColor: 'rgba(93, 64, 55, 0.05)',
+                            borderColor: 'primary.dark',
+                        }
+                    }}
                 >
                     Edit
                 </Button>
                 <Button
                     variant="contained"
-                    color="error"
                     onClick={() => onDelete(table.tableNumber)}
-                    sx={{ flex: 1 }}
+                    sx={{
+                        backgroundColor: '#8B4513',
+                        color: 'white',
+                        '&:hover': {
+                            backgroundColor: '#6B2D00',
+                        }
+                    }}
                 >
                     Delete
                 </Button>
             </Box>
-        </StyledTableCard>
+        </Paper>
     );
 };
 
